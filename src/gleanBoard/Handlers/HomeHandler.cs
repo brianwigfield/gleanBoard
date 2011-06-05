@@ -10,7 +10,7 @@ namespace gleanBoard.Handlers
     {
         public object Get()
         {
-            return new Home { Title = "gleanBoard." };
+            return new Home { Title = "gleanBoard" };
         }
     }
 }
