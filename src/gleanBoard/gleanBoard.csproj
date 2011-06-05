@@ -73,8 +73,9 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="assets\images\logo.gif" />
-    <Content Include="assets\images\menu_background.gif" />
     <Content Include="assets\images\menu_background.jpg" />
+    <Content Include="assets\images\menu_background_left.jpg" />
+    <Content Include="assets\images\menu_background_right.jpg" />
     <Content Include="assets\images\searchbox_background.gif" />
     <Content Include="assets\Site.css" />
     <Content Include="assets\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
