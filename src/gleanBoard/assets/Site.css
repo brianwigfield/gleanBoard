@@ -1,0 +1,89 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body
+{
+    background-color: #FFFFFF;
+    font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    padding:10px;
+}
+
+div.page 
+{
+    width:1100px;
+    margin-right:auto;
+    margin-left:auto;   
+    padding:10px;
+}
+
+ul#menu
+{
+    background-image: url('/assets/images/menu_background.jpg');
+    background-repeat:repeat-x;
+    padding: 0px;
+    margin: 0px;
+}
+
+ul#menu li
+{
+    display: inline;
+    list-style: none;
+}
+
+div#leftSide
+{
+    height:42px;
+    float:left;
+    background-image:url('/assets/images/menu_background_left.jpg');
+}
+
+div#rightSide
+{
+    height:42px;
+    background-image:url('/assets/images/menu_background_right.jpg');
+}
+
+ul#menu li a
+{
+    padding:10px 20px;
+    line-height:42px;
+    text-decoration: none;
+    color: #000000;
+    border-right:1px solid #CCCCCC;
+}
+
+ul#menu li a:hover
+{
+    text-decoration: none;
+}
+
+ul#menu li a:active
+{
+    text-decoration: none;
+}
+
+div#title
+{
+    display:block;
+    float:left;
+    text-align:left;
+}
+
+#logindisplay
+{
+    font-size:1.1em;
+    display:block;
+    text-align:right;
+    margin:10px;
+    color:White;
+}
+
+#menucontainer
+{
+    margin-top:40px;
+}

@@ -1,0 +1,21 @@
+R# version: 5.1.3000.12
+assembly OpenRasta.Codecs.Razor, Version=1.0.0.0, Culture=neutral
+  file C:\Repositories\gleanBoard\lib\OpenRasta.Codecs.Razor.dll mtime 6/4/2011 9:45:32 PM
+  file C:\Repositories\gleanBoard\src\gleanBoard\Bin\OpenRasta.Codecs.Razor.dll mtime 6/4/2011 9:45:32 PM
+referenced assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  file C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll mtime 2/10/2011 9:10:40 AM
+referenced assembly OpenRasta, Version=0.0.0.0, Culture=neutral
+  file C:\Repositories\gleanBoard\wraps\_cache\openrasta-core-2.1.0.53141187\bin-net35\OpenRasta.dll mtime 6/4/2011 3:07:27 PM
+  file C:\Repositories\gleanBoard\src\gleanBoard\Bin\OpenRasta.dll mtime 6/4/2011 3:07:27 PM
+referenced assembly System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+  file c:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.Razor.dll mtime 1/5/2011 9:45:38 PM
+referenced assembly System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+  file C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.dll mtime 3/19/2010 12:31:26 AM
+referenced assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  file C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll mtime 3/19/2010 12:31:26 AM
+referenced assembly System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+  file c:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.WebPages.dll mtime 1/5/2011 9:45:38 PM
+referenced assembly System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  file C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Core.dll mtime 2/10/2011 9:10:40 AM
+referenced assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  file C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll mtime 2/10/2011 9:10:40 AM

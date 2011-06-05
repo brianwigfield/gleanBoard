@@ -1,0 +1,6 @@
+<Modules>
+  <Module PersistentId="36983762-E2B8-46F3-A6DE-523E85BB9BB6" ModuleId="gleanBoard" />
+  <Module PersistentId="OpenRasta.Codecs.WebForms, Version=2.0.3.0, Culture=neutral" ModuleId="OpenRasta.Codecs.WebForms" />
+  <Module PersistentId="OpenRasta.Codecs.Razor, Version=1.0.0.0, Culture=neutral" ModuleId="OpenRasta.Codecs.Razor" />
+  <Module PersistentId="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" ModuleId="System.Web.Razor" />
+</Modules>
