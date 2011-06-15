@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gleanBoard", "gleanBoard.csproj", "{36983762-E2B8-46F3-A6DE-523E85BB9BB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gleanBoard.Features", "..\gleanBoard.Features\gleanBoard.Features.csproj", "{B87ED720-9A92-472C-AC8F-3F9D328B8E15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gleanBoard.UI", "..\gleanBoard.UI\gleanBoard.UI.csproj", "{6B50775C-F8DD-4FFD-9A98-99FBA0F88E1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{36983762-E2B8-46F3-A6DE-523E85BB9BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36983762-E2B8-46F3-A6DE-523E85BB9BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36983762-E2B8-46F3-A6DE-523E85BB9BB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B87ED720-9A92-472C-AC8F-3F9D328B8E15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B87ED720-9A92-472C-AC8F-3F9D328B8E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B87ED720-9A92-472C-AC8F-3F9D328B8E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B87ED720-9A92-472C-AC8F-3F9D328B8E15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B50775C-F8DD-4FFD-9A98-99FBA0F88E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B50775C-F8DD-4FFD-9A98-99FBA0F88E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B50775C-F8DD-4FFD-9A98-99FBA0F88E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B50775C-F8DD-4FFD-9A98-99FBA0F88E1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
