@@ -1,6 +1,5 @@
 <Modules>
   <Module PersistentId="36983762-E2B8-46F3-A6DE-523E85BB9BB6" ModuleId="gleanBoard" />
   <Module PersistentId="d:Miscellaneous Files" ModuleId="OpenRasta.Codecs.WebForms" />
-  <Module PersistentId="6B50775C-F8DD-4FFD-9A98-99FBA0F88E1F" ModuleId="gleanBoard.UI" />
   <Module PersistentId="B87ED720-9A92-472C-AC8F-3F9D328B8E15" ModuleId="gleanBoard.Features" />
 </Modules>
