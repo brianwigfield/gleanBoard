@@ -27,6 +27,11 @@ namespace gleanBoard
                     .HandledBy<CardHandler>()
                     .AsJsonDataContract();
 
+                ResourceSpace.Has.ResourcesOfType<NewLane>()
+                    .AtUri("/lane/create")
+                    .HandledBy<LaneHandler>()
+                    .AsJsonDataContract();
+
                 //.RenderedByAspx("~/Views/Home.aspx");
                 //.ForMediaType(OpenRasta.Web.MediaType.Html);
             }

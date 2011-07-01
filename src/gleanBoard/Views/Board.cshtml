@@ -88,7 +88,11 @@
                              })
                         },
                         addLane: function () {
-                            this.lanes.push(new lane("1", this.newLaneName, []));
+                            $.post("/lane/create",
+                             { name: viewModel.newLaneName },
+                             function (data) {
+                                viewModel.lanes.push(new lane(data.Id, data.Name, []));
+                             })
                         },
                         moveLanes: function (ids, from, to) {
                             this.events.push({ id: ids, from: from, to: to });
