@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using gleanBoard.Handlers;
@@ -15,7 +14,7 @@ namespace gleanBoard
         {
             using (OpenRastaConfiguration.Manual)
             {
-                var ll = new OpenRasta.Codecs.WebForms.ResourceView<Board>();
+
                 ResourceSpace.Has.ResourcesOfType<Board>()
                     .AtUri("/home")
                     .And.AtUri("/")
@@ -23,14 +22,14 @@ namespace gleanBoard
                     .RenderedByRazor(new {index = "~/Views/Board.cshtml"})
                     .ForMediaType(OpenRasta.Web.MediaType.Html);
 
-                    //.RenderedByAspx("~/Views/Home.aspx");
-                    //.ForMediaType(OpenRasta.Web.MediaType.Html);
+                ResourceSpace.Has.ResourcesOfType<NewCard>()
+                    .AtUri("/card/create")
+                    .HandledBy<CardHandler>()
+                    .AsJsonDataContract();
+
+                //.RenderedByAspx("~/Views/Home.aspx");
+                //.ForMediaType(OpenRasta.Web.MediaType.Html);
             }
         }
-    }
-
-    public class Home2
-    {
-        public string Blob { get; set; }
     }
 }

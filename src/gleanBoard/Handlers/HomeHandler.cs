@@ -16,11 +16,12 @@ namespace gleanBoard.Handlers
                                        {
                                            new Lane
                                                {
-                                                   Name = "BackLog",
-                                                   Cards = new List<string>(new[] {"My first card", "My second card"})
+                                                   Id = Guid.NewGuid().ToString(),
+                                                   Name = "Backlog",
+                                                   Cards = new List<Card> { new Card {Id = Guid.NewGuid().ToString(), Title = "My first card"}, new Card {Id= Guid.NewGuid().ToString(), Title = "My second card"}}
                                                },
-                                           new Lane {Name = "WorkingOn", Cards = new List<string>(new [] {"Blah card"})},
-                                           new Lane {Name = "Completed", Cards = new List<string>()}
+                                           new Lane {Name = "Working On", Cards = new List<Card> {new Card {Id= Guid.NewGuid().ToString(), Title = "Blah card"}}},
+                                           new Lane {Name = "Completed", Cards = new List<Card>()}
                                        }
                        };
         }

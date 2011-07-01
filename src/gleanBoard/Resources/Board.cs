@@ -6,17 +6,23 @@ namespace gleanBoard.Resources
 {
     public class Board
     {
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
         public List<Lane> Lanes { get; set; }
     }
 
     public class Lane
     {
 
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public List<string> Cards { get; set; }
+        public List<Card> Cards { get; set; }
         public List<MongoDBRef> CardRefs { get; set; }
-
     }
+
+    public class Card
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+    }
+
 }
