@@ -14,7 +14,10 @@ namespace gleanBoard.Handlers
 
         public NewLane Post(NewLaneData data)
         {
-            return new NewLane {Id = Guid.NewGuid().ToString(), Name = data.Name};
+            var id = Guid.NewGuid();
+            Runtime.Bus.Send(new CreateLaneCommand {Id = id, Name = data.Name});
+            
+            return new NewLane {Id = id.ToString(), Name = data.Name};
         }
 
     }

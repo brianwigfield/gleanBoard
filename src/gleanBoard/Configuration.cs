@@ -15,11 +15,16 @@ namespace gleanBoard
             using (OpenRastaConfiguration.Manual)
             {
 
-                ResourceSpace.Has.ResourcesOfType<Board>()
-                    .AtUri("/home")
-                    .And.AtUri("/")
+                ResourceSpace.Has.ResourcesOfType<string>()
+                    .AtUri("/")
                     .HandledBy<HomeHandler>()
-                    .RenderedByRazor(new {index = "~/Views/Board.cshtml"})
+                    .RenderedByRazor(new {index = "~/Views/Index.cshtml"})
+                    .ForMediaType(OpenRasta.Web.MediaType.Html);
+
+                ResourceSpace.Has.ResourcesOfType<Board>()
+                    .AtUri("/board")
+                    .HandledBy<BoardHandler>()
+                    .RenderedByRazor(new { index = "~/Views/Board.cshtml" })
                     .ForMediaType(OpenRasta.Web.MediaType.Html);
 
                 ResourceSpace.Has.ResourcesOfType<NewCard>()

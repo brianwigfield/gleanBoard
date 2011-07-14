@@ -1,4 +1,5 @@
 ﻿using System;
+using gleanBoard.Domain.Commands;
 using gleanBoard.Resources;
 
 namespace gleanBoard.Handlers
@@ -13,7 +14,10 @@ namespace gleanBoard.Handlers
     {
         public NewCard Post(NewCardData data)
         {
-            return new NewCard {Id = Guid.NewGuid().ToString(), Lane = data.Lane, Title = data.Title};
+            var id = Guid.NewGuid();
+            Runtime.Bus.Send(new CreateCardCommand {Id = id, Lane = data.Lane, Title = data.Title});
+
+            return new NewCard {Id = id.ToString(), Lane = data.Lane, Title = data.Title};
         }
     }
 }

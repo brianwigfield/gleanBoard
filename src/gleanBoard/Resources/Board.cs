@@ -16,7 +16,6 @@ namespace gleanBoard.Resources
         public string Id { get; set; }
         public string Name { get; set; }
         public List<Card> Cards { get; set; }
-        public List<MongoDBRef> CardRefs { get; set; }
     }
 
     public class Card
