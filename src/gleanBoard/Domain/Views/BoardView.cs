@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using gleanBoard.Domain.Events;
 using SimpleCqrs.Eventing;
@@ -29,7 +30,7 @@ namespace gleanBoard.Domain.Views
 
         public void Handle(LaneCreatedEvent domainEvent)
         {
-            _board.Lanes.Add(new Resources.Lane {Id = domainEvent.AggregateRootId.ToString(), Name = domainEvent.Name});
+            _board.Lanes.Add(new Resources.Lane {Id = domainEvent.AggregateRootId.ToString(), Name = domainEvent.Name, Cards = new List<Resources.Card>()});
         }
     }
 }
