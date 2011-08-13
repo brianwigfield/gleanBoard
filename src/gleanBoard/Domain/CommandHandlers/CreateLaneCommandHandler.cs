@@ -1,4 +1,6 @@
-﻿using gleanBoard.Handlers;
+﻿using gleanBoard.Domain.AggregateRoots;
+using gleanBoard.Domain.Commands;
+using gleanBoard.Handlers;
 using SimpleCqrs.Commanding;
 using SimpleCqrs.Domain;
 
@@ -15,8 +17,9 @@ namespace gleanBoard.Domain.CommandHandlers
 
         public override void Handle(CreateLaneCommand command)
         {
-            var lane = new AggregateRoots.Lane(command.Id, command.Name);
-            _repository.Save(lane);
+            var board = _repository.GetById<Board>(command.Board);
+            board.CreateLane(command.Id, command.Name, command.Position);
+            _repository.Save(board);
         }
     }
 }

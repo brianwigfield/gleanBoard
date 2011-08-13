@@ -1,4 +1,5 @@
-﻿using gleanBoard.Domain.AggregateRoots;
+﻿using System;
+using gleanBoard.Domain.AggregateRoots;
 using gleanBoard.Domain.Commands;
 using SimpleCqrs.Commanding;
 using SimpleCqrs.Domain;
@@ -16,8 +17,9 @@ namespace gleanBoard.Domain.CommandHandlers
 
         public override void Handle(CreateCardCommand command)
         {
-            var newCard = new Card(command.Id, command.Lane, command.Title);
-            _repository.Save(newCard);
+            var board = _repository.GetById<Board>(command.Board);
+            board.CreateCard(command.Id, command.Lane, command.Title, command.Position);
+            _repository.Save(board);
         }
     }
 }

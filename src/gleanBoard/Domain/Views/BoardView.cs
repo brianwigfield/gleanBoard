@@ -6,31 +6,66 @@ using SimpleCqrs.Eventing;
 
 namespace gleanBoard.Domain.Views
 {
-    public class BoardView : IHandleDomainEvents<CardCreatedEvent>, IHandleDomainEvents<LaneCreatedEvent>
+    public class BoardView :
+        IHandleDomainEvents<BoardCreatedEvent>,
+        IHandleDomainEvents<LaneCreatedEvent>,
+        IHandleDomainEvents<CardCreatedEvent>, 
+        IHandleDomainEvents<CardMovedEvent>
     {
-        readonly Resources.Board _board;
+        readonly ViewRepository _repo;
 
-        public BoardView(Resources.Board board)
+        public BoardView(ViewRepository repo)
         {
-            _board = board;
+            _repo = repo;
         }
 
         public void Handle(CardCreatedEvent domainEvent)
         {
-            var lane = _board.Lanes.First(x => x.Id == domainEvent.Lane);
+            var board = _repo.Get<Resources.Board>();
+            var lane = board.Lanes.First(x => x.Id == domainEvent.Lane);
             if (lane.Cards == null)
-                lane.Cards = new System.Collections.Generic.List<Resources.Card>();
+                lane.Cards = new List<Resources.Card>();
 
             lane.Cards.Add(new Resources.Card
                                {
-                                   Id = domainEvent.AggregateRootId.ToString(),
+                                   Id = domainEvent.Card,
                                    Title = domainEvent.Title
                                });
+            _repo.Save(board);
+        }
+
+        public void Handle(BoardCreatedEvent domainEvent)
+        {
+            var board = _repo.Get<Resources.Board>();
+            if (board == null)
+                board = new Resources.Board();
+
+            board.Id = domainEvent.AggregateRootId;
+            board.Name = domainEvent.Name;
+            _repo.Save(board);
+        }
+
+        public void Handle(CardMovedEvent domainEvent)
+        {
+            var board = _repo.Get<Resources.Board>();
+            var fromLane = board.Lanes.Single(x => x.Cards.Any(c => c.Id == domainEvent.Card));
+
+            var card = fromLane.Cards.Single(x => x.Id == domainEvent.Card);
+
+            fromLane.Cards.Remove(card);
+            board.Lanes.Single(x => x.Id == domainEvent.Lane).Cards.Insert(domainEvent.Position, card);
+
+            _repo.Save(board);
         }
 
         public void Handle(LaneCreatedEvent domainEvent)
         {
-            _board.Lanes.Add(new Resources.Lane {Id = domainEvent.AggregateRootId.ToString(), Name = domainEvent.Name, Cards = new List<Resources.Card>()});
+            var board = _repo.Get<Resources.Board>();
+            if (board.Lanes == null)
+                board.Lanes = new List<Resources.Lane>();
+
+            board.Lanes.Insert(domainEvent.Postion, new Resources.Lane {Id = domainEvent.Id, Name = domainEvent.Name});
+            _repo.Save(board);
         }
     }
 }

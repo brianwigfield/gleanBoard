@@ -27,6 +27,14 @@ namespace gleanBoard
                     .RenderedByRazor(new { index = "~/Views/Board.cshtml" })
                     .ForMediaType(OpenRasta.Web.MediaType.Html);
 
+                ResourceSpace.Has.ResourcesOfType<bool>()
+                    .AtUri("/signup")
+                    .HandledBy<SignUpHandler>()
+                    .RenderedByRazor(new {index = "~/Views/SignUp.cshtml"})
+                    .ForMediaType(OpenRasta.Web.MediaType.Html)
+                    .And
+                    .AsJsonDataContract();
+
                 ResourceSpace.Has.ResourcesOfType<NewCard>()
                     .AtUri("/card/create")
                     .HandledBy<CardHandler>()
@@ -36,6 +44,18 @@ namespace gleanBoard
                     .AtUri("/lane/create")
                     .HandledBy<LaneHandler>()
                     .AsJsonDataContract();
+
+                ResourceSpace.Has.ResourcesOfType<bool>()
+                    .AtUri("/tools/rebuildviews")
+                    .HandledBy<RebuildViewsHandler>()
+                    .AsJsonDataContract();
+
+                ResourceSpace.Has.ResourcesOfType<bool>()
+                    .AtUri("/card/move")
+                    .HandledBy<MoveCardHandler>()
+                    .AsJsonDataContract();
+
+
 
                 //.RenderedByAspx("~/Views/Home.aspx");
                 //.ForMediaType(OpenRasta.Web.MediaType.Html);

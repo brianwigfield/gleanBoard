@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
+using SimpleCqrs.Eventing;
+using gleanBoard.Domain.Events;
 using gleanBoard.Resources;
 using SimpleCqrs;
 using SimpleCqrs.Commanding;
@@ -9,8 +11,13 @@ using SimpleCqrs.Unity;
 namespace gleanBoard
 {
 
-    public class CqrsRuntime : SimpleCqrs.SimpleCqrsRuntime<UnityServiceLocator>
+    public class CqrsRuntime : SimpleCqrsRuntime<UnityServiceLocator>
     {
+        protected override IEventStore GetEventStore(IServiceLocator serviceLocator)
+        {
+            return new SimpleCqrs.EventStore.MongoDb.MongoEventStore("mongodb://localhost", serviceLocator.Resolve<ITypeCatalog>());
+        }
+
     }
 
     public static class Runtime
@@ -22,8 +29,6 @@ namespace gleanBoard
     public class Global : HttpApplication
     {
 
-        
-
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
@@ -33,14 +38,11 @@ namespace gleanBoard
             Runtime.Bus = runtime.ServiceLocator.Resolve<ICommandBus>();
             Runtime.Locator = runtime.ServiceLocator;
 
-            var board = new Board {Lanes = new List<Lane>()};
-            //{
-                              //    new Lane{Id = Guid.NewGuid().ToString(), Name = "Backlog", Cards = new List<Card>()},
-                              //    new Lane {Id = Guid.NewGuid().ToString(), Name = "Working On", Cards =new List<Card>()},
-                              //    new Lane {Id = Guid.NewGuid().ToString(), Name = "Completed", Cards = new List<Card>()}
-                              //};
-            runtime.ServiceLocator.Register(board);
+            var repo = new ViewRepository();
+            runtime.ServiceLocator.Register(repo);
 
+            //var ll = runtime.ServiceLocator.Resolve<IEventStore>().GetEventsByEventTypes(new List<Type> { typeof(LaneCreatedEvent) }, DateTime.Now.AddYears(-1), DateTime.Now);
+            //runtime.ServiceLocator.Resolve<IEventBus>().PublishEvents(ll);
         }
 
         void Application_End(object sender, EventArgs e)

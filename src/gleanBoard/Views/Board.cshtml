@@ -10,69 +10,6 @@
     <script src="/Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
     <script type='text/javascript' src='/Scripts/jquery.tmpl.js'></script>
     <script type='text/javascript' src='/Scripts/knockout-1.2.1.js'></script>
-    <style type="text/css">
-        .container div
-        {
-            float:left;
-        }
-
-        .laneCard
-        {
-            height:80px;
-            border:solid 1px #666666;
-            background-color:#CCCCCC;
-            color:#000000;
-        }
-
-        .laneCardDrop
-        {
-            height:80px;
-            border:solid 1px #000000;
-            background-color:orange;
-        }
-
-        .boardLane  {
-            list-style-type: none; 
-            margin: 0; 
-            padding: 5px; 
-            padding: 5px;
-            width: 200px;
-            min-height:300px;
-            border-right:5px solid #DDDDDD;
-        }
-        .boardLane li {
-            margin: 5px; 
-            padding: 5px; 
-            font-size: 1.2em; 
-            width: 180px;
-            border-radius:5px;
-        }
-        
-        div#menu
-        {
-            float:left;
-        }
-        
-        div#menu ul
-        {
-            list-style-type:none;
-            margin:3px;
-            padding:0px;
-        }
-        div#menu ul li
-        {
-            padding:3px;
-            margin:2px;
-            border:1px solid #CCCCCC;
-            border-radius:2px;
-        }
-        
-        div#cardForm
-        {
-            float:left;
-        }
-        
-    </style>
 </head>
 
 <body>
@@ -86,119 +23,29 @@
 
         <div id="main">
 
-            <script type="text/javascript">
-                $(document).ready(function () {
+            <script src="/assets/board.js"></script>
 
-                    function card(id, name, price) {
-                        return {
-                            Id: id,
-                            Name: name
-                        };
-                    };
+            <script>
 
-                    function lane(id, name, cards) {
-                        return {
-                            Id: id,
-                            Name: name,
-                            Cards: ko.observableArray(cards)
-                        };
-                    };
-
-                    function moveById(ids, fromArray, toArray) {
-                        var moved = fromArray.remove(function (p) {
-                            return ko.utils.arrayIndexOf(ids, p.Id.toString()) >= 0;
-                        });
-                        for (var i = 0; i < moved.length; i++)
-                            toArray.push(moved[i]);
-                    };
-
-
-                    var viewModel = {
-                        owner: "Brian",
-                        lanes: ko.observableArray([
-                        @foreach (var lane in Resource.Lanes)
+                $(function () {
+                    viewModel.board = "@Resource.Id"
+                    @if(Resource.Lanes != null)
+                    {
+                        foreach (var lane in Resource.Lanes)
                         {
-                            <text>new lane("@lane.Id", "@lane.Name",[</text>
-                            foreach(var card in lane.Cards)
-		                    {
-			                    <text>new card("@card.Id","@card.Title"),</text>
-		                    }
-                            <text>]),</text>
-                        }
-                        ]),
-                        newCards: ko.observableArray([
-                            new card("", "Testing")
-                        ]),
-                        events: ko.observableArray(),
-                        newCardTitle: ko.observable("New Card"),
-                        newLaneName: ko.observable("New Lane"),
-                        addCard: function () {
-                            $.post("/card/create",
-                             { title: viewModel.newCardTitle, lane: $("#newCardLane").val() },
-                             function (data) {
-                                viewModel.findLaneById(data.Lane).Cards.push(new card(data.Id, data.Title));
-                             })
-                        },
-                        addLane: function () {
-                            $.post("/lane/create",
-                             { name: viewModel.newLaneName },
-                             function (data) {
-                                viewModel.lanes.push(new lane(data.Id, data.Name, []));
-                             })
-                        },
-                        moveLanes: function (ids, from, to) {
-                            this.events.push({ id: ids, from: from, to: to });
-
-                            var fromLane;
-                            var toLane;
-                            for (var i = 0; i < this.lanes().length; i++) {
-                                if (this.lanes()[i].Name == from)
-                                    fromLane = this.lanes()[i];
-
-                                if (this.lanes()[i].Name == to)
-                                    toLane = this.lanes()[i];
+                            <text>window.viewModel.lanes.push(new lane("@lane.Id", "@lane.Name",[</text>
+                            if (lane.Cards != null)
+                            {
+                                foreach (var card in lane.Cards)
+		                        {
+			                        <text>new card("@card.Id","@card.Title"),</text>
+		                        }
                             }
-
-                            moveById(ids, fromLane.Cards, toLane.Cards);
-                        },
-                        createLanes: function () {
-                            $(".connectedSortable").sortable({
-                                connectWith: ".connectedSortable",
-                                placeholder: "laneCardDrop",
-                                dropOnEmpty: true
-                            }).disableSelection();
-                        },
-                        findLaneById: function(id) {
-                            for (var i = 0; i < this.lanes().length; i++) {
-                                if (this.lanes()[i].Id == id)
-                                    return this.lanes()[i];
-                            }
+                            <text>]));</text>
                         }
-                    };
-
-                    ko.bindingHandlers.onReceiveItem = {
-                        init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-                            var callback = valueAccessor();
-                            $(element).bind("sortreceive", function (event, ui) {
-                                var receivedIds = $.map(ui.item, function (item) {
-                                    return $(item).attr("data-id")
-                                });
-                                callback.call(viewModel, receivedIds, ui.sender.context.id, event.target.id);
-                            });
-                        }
-                    };
-
-                    ko.applyBindings(viewModel);
-
-                    $("#addCardLink").click(function () {
-                        $("#cardForm").toggle();
-                    });
-
-                    $("#addLaneLink").click(function () {
-                        $("#laneForm").toggle();
-                    });
-
+                    }
                 });
+            
             </script>
 
             <div id="menu">
@@ -256,7 +103,7 @@
                 {{each lanes}}
                 <div>
                     ${Name}
-                    <ul id="${Name}" class="connectedSortable boardLane" data-bind="template: { name: 'cardTmpl', foreach: Cards}, onReceiveItem: moveLanes"></ul>
+                    <ul id="${Id}" class="connectedSortable boardLane" data-bind="template: { name: 'cardTmpl', foreach: Cards}, onReceiveItem: moveLanes"></ul>
                 </div>
                 {{/each}}
             </script>
