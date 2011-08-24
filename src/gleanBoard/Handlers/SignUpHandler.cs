@@ -13,18 +13,18 @@ namespace gleanBoard.Handlers
     public class SignUpHandler
     {
 
-        public object Get()
+        public Signup Get()
         {
-            return true;
+            return new Signup {Result = true};
         }
 
-        public object Post(SignUpData data)
+        public Signup Post(SignUpData data)
         {
             if (data.Password != data.PasswordConfirm)
-                return false;
+                return new Signup { Result = false };
 
             Runtime.Bus.Send(new SignUpCommand {Username = data.UserName, Password = data.Password});
-            return true;
+            return new Signup { Result = true };
         }
     }
 }

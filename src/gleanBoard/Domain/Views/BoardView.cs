@@ -48,12 +48,16 @@ namespace gleanBoard.Domain.Views
         public void Handle(CardMovedEvent domainEvent)
         {
             var board = _repo.Get<Resources.Board>();
-            var fromLane = board.Lanes.Single(x => x.Cards.Any(c => c.Id == domainEvent.Card));
+            var fromLane = board.Lanes.Single(x => x.Cards != null && x.Cards.Any(c => c.Id == domainEvent.Card));
 
             var card = fromLane.Cards.Single(x => x.Id == domainEvent.Card);
 
             fromLane.Cards.Remove(card);
-            board.Lanes.Single(x => x.Id == domainEvent.Lane).Cards.Insert(domainEvent.Position, card);
+            var toLane = board.Lanes.Single(x => x.Id == domainEvent.Lane);
+            if (toLane.Cards == null)
+                toLane.Cards = new List<Resources.Card>();
+            
+            toLane.Cards.Insert(domainEvent.Position, card);
 
             _repo.Save(board);
         }
@@ -64,7 +68,11 @@ namespace gleanBoard.Domain.Views
             if (board.Lanes == null)
                 board.Lanes = new List<Resources.Lane>();
 
-            board.Lanes.Insert(domainEvent.Postion, new Resources.Lane {Id = domainEvent.Id, Name = domainEvent.Name});
+            board.Lanes.Insert(domainEvent.Postion, new Resources.Lane
+                                                        {
+                                                            Id = domainEvent.Lane, 
+                                                            Name = domainEvent.Name
+                                                        });
             _repo.Save(board);
         }
     }

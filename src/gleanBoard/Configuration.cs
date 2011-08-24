@@ -15,7 +15,7 @@ namespace gleanBoard
             using (OpenRastaConfiguration.Manual)
             {
 
-                ResourceSpace.Has.ResourcesOfType<string>()
+                ResourceSpace.Has.ResourcesOfType<Home>()
                     .AtUri("/")
                     .HandledBy<HomeHandler>()
                     .RenderedByRazor(new {index = "~/Views/Index.cshtml"})
@@ -27,7 +27,12 @@ namespace gleanBoard
                     .RenderedByRazor(new { index = "~/Views/Board.cshtml" })
                     .ForMediaType(OpenRasta.Web.MediaType.Html);
 
-                ResourceSpace.Has.ResourcesOfType<bool>()
+                ResourceSpace.Has.ResourcesOfType<RebuildViews>()
+                    .AtUri("/tools/rebuildviews")
+                    .HandledBy<RebuildViewsHandler>()
+                    .AsJsonDataContract();
+
+                ResourceSpace.Has.ResourcesOfType<Signup>()
                     .AtUri("/signup")
                     .HandledBy<SignUpHandler>()
                     .RenderedByRazor(new {index = "~/Views/SignUp.cshtml"})
@@ -45,12 +50,7 @@ namespace gleanBoard
                     .HandledBy<LaneHandler>()
                     .AsJsonDataContract();
 
-                ResourceSpace.Has.ResourcesOfType<bool>()
-                    .AtUri("/tools/rebuildviews")
-                    .HandledBy<RebuildViewsHandler>()
-                    .AsJsonDataContract();
-
-                ResourceSpace.Has.ResourcesOfType<bool>()
+                ResourceSpace.Has.ResourcesOfType<CardMoved>()
                     .AtUri("/card/move")
                     .HandledBy<MoveCardHandler>()
                     .AsJsonDataContract();
@@ -61,5 +61,20 @@ namespace gleanBoard
                 //.ForMediaType(OpenRasta.Web.MediaType.Html);
             }
         }
+    }
+
+    public class Signup
+    {
+        public bool Result { get; set; }
+    }
+
+    public class RebuildViews
+    {
+        public bool Result { get; set; }
+    }
+
+    public class CardMoved
+    {
+        public bool Result { get; set; }
     }
 }

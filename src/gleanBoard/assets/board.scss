@@ -2,8 +2,8 @@
 {
     background-color: #FFFFFF;
     font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     color: #000000;
     padding:10px;
 }
@@ -87,7 +87,13 @@ div#title
     margin-top:40px;
 }
 
-div#header:after
+div#sidebar
+{
+    border-bottom:1px solid black;
+    width:100%;
+}
+
+div#sidebar:after
 {
     content:".";
     display:block;
@@ -105,7 +111,7 @@ div#header:after
 {
     height:80px;
     border:solid 1px #666666;
-    background-color:#CCCCCC;
+    background-color:#FFFFFF;
     color:#000000;
 }
 

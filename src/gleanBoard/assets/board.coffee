@@ -16,22 +16,20 @@ window.viewModel =
     newCards: ko.observableArray([
         new card "", "Testing"
     ]),
-    events: ko.observableArray(),
     newCardTitle: ko.observable("New Card"),
     newLaneName: ko.observable("New Lane"),
     addCard: ->
         $.post "/card/create",
                { board: viewModel.board, title: viewModel.newCardTitle, lane: $("#newCardLane").val(), position:1 },
-               (data) -> viewModel.findLaneById(data.Id).Cards.push(new card(data.Id, data.Title))
+               (data) -> 
+                    viewModel.findLaneById(data.Lane).Cards.push(new card(data.Id, data.Title))
     ,
     addLane: ->
         $.post "/lane/create",
-               { name: viewModel.newLaneName },
-               (data) -> viewModel.lanes.push(new lane(data.Id, data.Name, []))
+               { name: viewModel.newLaneName, board: viewModel.board, position: 0 },
+               (data) -> viewModel.lanes.splice(0, 0, new lane(data.Id, data.Name, []))
     ,
-    moveLanes: (ids, from, to, position) ->
-        this.events.push { id: ids, from: from, to: to }
-
+    moveCard: (ids, from, to, position) ->
         l = for lane in this.lanes()
             fromLane = lane if lane.Id == from
             toLane = lane if lane.Id == to
@@ -52,9 +50,7 @@ window.viewModel =
         }).disableSelection()
     ,
     findLaneById: (id) ->
-        l = for lane in this.lanes()
-            lane if lane.Id == id
-        return lane
+        (lane for lane in this.lanes() when lane.Id == id)[0]
 
 
 ko.bindingHandlers.onReceiveItem = {

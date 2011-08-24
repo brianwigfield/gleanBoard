@@ -28,7 +28,6 @@
     owner: "Brian",
     lanes: ko.observableArray([]),
     newCards: ko.observableArray([new card("", "Testing")]),
-    events: ko.observableArray(),
     newCardTitle: ko.observable("New Card"),
     newLaneName: ko.observable("New Lane"),
     addCard: function() {
@@ -38,23 +37,20 @@
         lane: $("#newCardLane").val(),
         position: 1
       }, function(data) {
-        return viewModel.findLaneById(data.Id).Cards.push(new card(data.Id, data.Title));
+        return viewModel.findLaneById(data.Lane).Cards.push(new card(data.Id, data.Title));
       });
     },
     addLane: function() {
       return $.post("/lane/create", {
-        name: viewModel.newLaneName
+        name: viewModel.newLaneName,
+        board: viewModel.board,
+        position: 0
       }, function(data) {
-        return viewModel.lanes.push(new lane(data.Id, data.Name, []));
+        return viewModel.lanes.splice(0, 0, new lane(data.Id, data.Name, []));
       });
     },
-    moveLanes: function(ids, from, to, position) {
+    moveCard: function(ids, from, to, position) {
       var fromLane, l, lane, post, toLane;
-      this.events.push({
-        id: ids,
-        from: from,
-        to: to
-      });
       l = (function() {
         var _i, _len, _ref, _results;
         _ref = this.lanes();
@@ -88,18 +84,19 @@
       }).disableSelection();
     },
     findLaneById: function(id) {
-      var l, lane;
-      l = (function() {
+      var lane;
+      return ((function() {
         var _i, _len, _ref, _results;
         _ref = this.lanes();
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           lane = _ref[_i];
-          _results.push(lane.Id === id ? lane : void 0);
+          if (lane.Id === id) {
+            _results.push(lane);
+          }
         }
         return _results;
-      }).call(this);
-      return lane;
+      }).call(this))[0];
     }
   };
   ko.bindingHandlers.onReceiveItem = {

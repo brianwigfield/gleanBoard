@@ -7,11 +7,11 @@ namespace gleanBoard.Handlers
 {
     public class RebuildViewsHandler
     {
-        public bool Get()
+        public RebuildViews Get()
         {
             var events = Runtime.Locator.Resolve<IEventStore>().GetEventsByEventTypes(new List<Type> { typeof(BoardCreatedEvent), typeof(CardCreatedEvent), typeof(LaneCreatedEvent), typeof(CardMovedEvent) }, DateTime.Now.AddYears(-1), DateTime.Now);
             Runtime.Locator.Resolve<IEventBus>().PublishEvents(events);
-            return true;
+            return new RebuildViews {Result = true};
         }
     }
 }

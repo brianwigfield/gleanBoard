@@ -15,10 +15,18 @@
 <body>
     <div class="page">
 
-        <div id="header">
+        <div id="sidebar">
             <div id="title">
                 <img src="/assets/images/logo.gif" alt="Logo" />
             </div>
+
+            <div id="menu">
+                <ul>
+                    <li><a id="addCardLink" href="#">C+</a></li>
+                    <li><a id="addLaneLink" href="#">L+</a></li>
+                </ul>
+            </div>
+
         </div>
 
         <div id="main">
@@ -47,13 +55,6 @@
                 });
             
             </script>
-
-            <div id="menu">
-                <ul>
-                    <li><a id="addCardLink" href="#">C+</a></li>
-                    <li><a id="addLaneLink" href="#">L+</a></li>
-                </ul>
-            </div>
                 
             <div id="cardForm" style="position:absolute; top:50px; left:50px; border:1px solid #666666; border-radius:3px; background:#FFFFFF; padding:10px; display:none;">
                 <h4>Create Card</h4>
@@ -103,7 +104,7 @@
                 {{each lanes}}
                 <div>
                     ${Name}
-                    <ul id="${Id}" class="connectedSortable boardLane" data-bind="template: { name: 'cardTmpl', foreach: Cards}, onReceiveItem: moveLanes"></ul>
+                    <ul id="${Id}" class="connectedSortable boardLane" data-bind="template: { name: 'cardTmpl', foreach: Cards}, onReceiveItem: moveCard"></ul>
                 </div>
                 {{/each}}
             </script>
@@ -112,16 +113,7 @@
                 <li data-id="${Id}" class="laneCard">${Name}</li>
             </script>
         
-            <script type="text/html" id="eventsTmpl">
-                <ul>
-                    <li>moving ${id} from ${from} to ${to}</li>
-                </ul>
-            </script>
-        
             <div style="clear:both;"></div>
-
-            <div id="events" data-bind="template: {name: 'eventsTmpl', foreach: events}">
-            </div>
 
         </div>
     </div>
