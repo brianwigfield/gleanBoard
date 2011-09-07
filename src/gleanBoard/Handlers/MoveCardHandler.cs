@@ -15,10 +15,10 @@ namespace gleanBoard.Handlers
             public int Position { get; set; }
         }
 
-        public CardMoved Post(MoveLaneData data)
+        public bool Post(MoveLaneData data)
         {
             Runtime.Bus.Send(new MoveCardCommand { Board = Guid.Parse(data.Board), Card = Guid.Parse(data.Card), From = Guid.Parse(data.From), To = Guid.Parse(data.To), Position = data.Position });
-            return new CardMoved {Result = true};
+            return true;
         }
 
     }

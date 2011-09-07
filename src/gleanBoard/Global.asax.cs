@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using SimpleCqrs.Eventing;
-using gleanBoard.Domain.Events;
-using gleanBoard.Resources;
 using SimpleCqrs;
 using SimpleCqrs.Commanding;
 using SimpleCqrs.Unity;
@@ -18,6 +16,10 @@ namespace gleanBoard
             return new SimpleCqrs.EventStore.MongoDb.MongoEventStore("mongodb://localhost", serviceLocator.Resolve<ITypeCatalog>());
         }
 
+        protected override System.Collections.Generic.IEnumerable<System.Reflection.Assembly> GetAssembliesToScan(IServiceLocator serviceLocator)
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().Where(_ => _.GlobalAssemblyCache == false);
+        }
     }
 
     public static class Runtime

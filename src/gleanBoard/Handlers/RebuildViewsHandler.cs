@@ -1,17 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using gleanBoard.Domain.Events;
-using SimpleCqrs.Eventing;
 
 namespace gleanBoard.Handlers
 {
+    public class RebuildData
+    {
+        public DateTime? AsOf { get; set; }
+    }
+
     public class RebuildViewsHandler
     {
-        public RebuildViews Get()
+        public bool Get(RebuildData data)
         {
-            var events = Runtime.Locator.Resolve<IEventStore>().GetEventsByEventTypes(new List<Type> { typeof(BoardCreatedEvent), typeof(CardCreatedEvent), typeof(LaneCreatedEvent), typeof(CardMovedEvent) }, DateTime.Now.AddYears(-1), DateTime.Now);
-            Runtime.Locator.Resolve<IEventBus>().PublishEvents(events);
-            return new RebuildViews {Result = true};
+            Runtime.Locator.Resolve<SimpleCqrs.Utilites.DomainEventReplayer>().ReplayEventsForHandlerType(
+                typeof(Domain.Views.BoardView), 
+                DateTime.Now.AddYears(-1), 
+                data.AsOf.GetValueOrDefault(DateTime.Now));
+            return true;
         }
     }
 }

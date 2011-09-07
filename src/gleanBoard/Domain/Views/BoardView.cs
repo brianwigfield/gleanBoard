@@ -19,6 +19,16 @@ namespace gleanBoard.Domain.Views
             _repo = repo;
         }
 
+        public void Handle(BoardCreatedEvent domainEvent)
+        {
+            var board = new Resources.Board
+            {
+                Id = domainEvent.AggregateRootId,
+                Name = domainEvent.Name
+            };
+            _repo.Save(board);
+        }
+
         public void Handle(CardCreatedEvent domainEvent)
         {
             var board = _repo.Get<Resources.Board>();
@@ -26,22 +36,30 @@ namespace gleanBoard.Domain.Views
             if (lane.Cards == null)
                 lane.Cards = new List<Resources.Card>();
 
-            lane.Cards.Add(new Resources.Card
-                               {
-                                   Id = domainEvent.Card,
-                                   Title = domainEvent.Title
-                               });
+            if (domainEvent.Postion > lane.Cards.Count)
+                domainEvent.Postion = lane.Cards.Count();
+
+            lane.Cards.Insert(domainEvent.Postion,
+                              new Resources.Card
+                                  {
+                                      Id = domainEvent.Card,
+                                      Title = domainEvent.Title,
+                                      Description = domainEvent.Description
+                                  });
             _repo.Save(board);
         }
 
-        public void Handle(BoardCreatedEvent domainEvent)
+        public void Handle(LaneCreatedEvent domainEvent)
         {
             var board = _repo.Get<Resources.Board>();
-            if (board == null)
-                board = new Resources.Board();
+            if (board.Lanes == null)
+                board.Lanes = new List<Resources.Lane>();
 
-            board.Id = domainEvent.AggregateRootId;
-            board.Name = domainEvent.Name;
+            board.Lanes.Insert(domainEvent.Postion, new Resources.Lane
+            {
+                Id = domainEvent.Lane,
+                Name = domainEvent.Name
+            });
             _repo.Save(board);
         }
 
@@ -62,18 +80,5 @@ namespace gleanBoard.Domain.Views
             _repo.Save(board);
         }
 
-        public void Handle(LaneCreatedEvent domainEvent)
-        {
-            var board = _repo.Get<Resources.Board>();
-            if (board.Lanes == null)
-                board.Lanes = new List<Resources.Lane>();
-
-            board.Lanes.Insert(domainEvent.Postion, new Resources.Lane
-                                                        {
-                                                            Id = domainEvent.Lane, 
-                                                            Name = domainEvent.Name
-                                                        });
-            _repo.Save(board);
-        }
     }
 }

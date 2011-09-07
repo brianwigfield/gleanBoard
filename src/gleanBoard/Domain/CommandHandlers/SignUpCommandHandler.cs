@@ -27,7 +27,7 @@ namespace gleanBoard.Domain.CommandHandlers
             board.CreateLane(backlogId,"Backlog",0);
             board.CreateLane(Guid.NewGuid(),"Doing", 1);
             board.CreateLane(Guid.NewGuid(),"Done", 2);
-            board.CreateCard(Guid.NewGuid(), backlogId, "Test Card", 0);
+            board.CreateCard(Guid.NewGuid(), backlogId, "Test Card", 0, "Welcome");
             _repository.Save(account);
             _repository.Save(board);
         }

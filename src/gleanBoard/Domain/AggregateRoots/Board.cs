@@ -24,9 +24,9 @@ namespace gleanBoard.Domain.AggregateRoots
             Apply(new LaneCreatedEvent {AggregateRootId = Id, Lane = id, Name = name, Postion = position});
         }
 
-        public void CreateCard(Guid id, Guid lane, string title, int position)
+        public void CreateCard(Guid id, Guid lane, string title, int position, string description)
         {
-            Apply(new CardCreatedEvent {AggregateRootId = Id, Card = id, Lane = lane, Title = title, Postion = position});
+            Apply(new CardCreatedEvent {AggregateRootId = Id, Card = id, Lane = lane, Title = title, Postion = position, Description = description});
         }
 
         public void MoveCard(Guid card, Guid fromLane, Guid toLane, int position)

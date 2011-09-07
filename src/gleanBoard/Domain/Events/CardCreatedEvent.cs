@@ -9,6 +9,10 @@ namespace gleanBoard.Domain.Events
         public Guid Lane { get; set; }
         public string Title { get; set; }
         public int Postion { get; set; }
+        public string Description { get; set; }
+
+        public override int GetHashCode() { return -2051383496; }
 
     }
+
 }

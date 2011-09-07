@@ -10,6 +10,7 @@ namespace gleanBoard.Handlers
         public string Lane { get; set; }
         public string Title { get; set; }
         public int Position { get; set; }
+        public string Description { get; set; }
     }
 
     public class CardHandler
@@ -17,7 +18,7 @@ namespace gleanBoard.Handlers
         public NewCard Post(NewCardData data)
         {
             var id = Guid.NewGuid();
-            Runtime.Bus.Send(new CreateCardCommand {Id = id, Board = Guid.Parse(data.Board), Lane = Guid.Parse(data.Lane), Title = data.Title, Position = data.Position});
+            Runtime.Bus.Send(new CreateCardCommand {Id = id, Board = Guid.Parse(data.Board), Lane = Guid.Parse(data.Lane), Title = data.Title, Position = data.Position, Description = data.Description});
 
             return new NewCard {Id = id.ToString(), Lane = data.Lane, Title = data.Title};
         }

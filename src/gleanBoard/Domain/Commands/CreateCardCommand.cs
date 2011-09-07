@@ -10,5 +10,6 @@ namespace gleanBoard.Domain.Commands
         public Guid Lane { get; set; }
         public string Title { get; set; }
         public int Position { get; set; }
+        public string Description { get; set; }
     }
 }

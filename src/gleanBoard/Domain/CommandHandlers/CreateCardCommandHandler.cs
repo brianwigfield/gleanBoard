@@ -18,7 +18,7 @@ namespace gleanBoard.Domain.CommandHandlers
         public override void Handle(CreateCardCommand command)
         {
             var board = _repository.GetById<Board>(command.Board);
-            board.CreateCard(command.Id, command.Lane, command.Title, command.Position);
+            board.CreateCard(command.Id, command.Lane, command.Title, command.Position, command.Description);
             _repository.Save(board);
         }
     }
