@@ -1,6 +1,0 @@
-﻿name: nunit
-depends: tdnet-framework
-use-project-repository: false
-build: files; file=bin-net35->bin\*
-referenced-assemblies: nunit.framework.dll
-version: 2.5.5.48562325

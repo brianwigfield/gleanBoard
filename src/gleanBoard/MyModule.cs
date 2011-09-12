@@ -14,14 +14,7 @@ namespace gleanBoard
         {
 
             Get["/"] = _ =>
-                {
-                    var replay = Runtime.Locator.Resolve<SimpleCqrs.Utilites.DomainEventReplayer>();
-                    var ll =
-                        replay.ExpandEventTypesWithAncestors(
-                            replay.GetDomainEventTypesHandledByHandler(typeof(Domain.Views.BoardView)));
-
-                    return View["Views/Home.cshtml"];
-                };
+                View["Views/Home.cshtml"];
 
             Get["/board"] = _ =>
                 {
@@ -42,22 +35,22 @@ namespace gleanBoard
 
             Post["/signup"] = _ =>
                 {
-                    return View[new SignUpHandler().Post(this.Bind<SignUpData>())];
+                    return Response.AsJson(new SignUpHandler().Post(this.Bind<SignUpData>()));
                 };
 
             Post["/card/create"] = _ =>
                 {
-                    return View[new CardHandler().Post(this.Bind<NewCardData>())];
+                    return Response.AsJson(new CardHandler().Post(this.Bind<NewCardData>()));
                 };
 
             Post["/card/move"] = _ =>
                 {
-                    return View[new MoveCardHandler().Post(this.Bind<MoveCardHandler.MoveLaneData>())];
+                    return Response.AsJson(new MoveCardHandler().Post(this.Bind<MoveCardHandler.MoveLaneData>()));
                 };
 
             Post["/lane/create"] = _ =>
                 {
-                    return View[new LaneHandler().Post(this.Bind<NewLaneData>())];
+                    return Response.AsJson(new LaneHandler().Post(this.Bind<NewLaneData>()));
                 };
         }
 

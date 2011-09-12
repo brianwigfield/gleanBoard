@@ -1,3 +1,0 @@
-﻿name: gleanBoard
-depends: openwrap anchored content
-depends: openrasta-full

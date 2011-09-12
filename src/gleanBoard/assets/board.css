@@ -11,6 +11,13 @@ div.page {
 div#menu {
   float: left; }
 
+div#menu:after {
+  content: ".";
+  display: block;
+  line-height: 0px;
+  visibility: hidden;
+  clear: both; }
+
 div#menu ul {
   list-style-type: none;
   margin: 3px;
@@ -32,15 +39,15 @@ div#menuHolder {
   padding: 10px;
   height: 40px; }
 
-div#menuHolder:after {
+div#cardForm {
+  float: left; }
+
+div#cardForm:after {
   content: ".";
   display: block;
   line-height: 0px;
   visibility: hidden;
   clear: both; }
-
-div#cardForm {
-  float: left; }
 
 .boardLaneContainer {
   float: left;

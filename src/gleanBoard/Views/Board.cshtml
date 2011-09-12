@@ -25,20 +25,20 @@
                 </ul>
             </div>
 
-            <div id="cardForm" style="padding:10px; display:none;">
+        </div>
+        <div id="inlineFormHolder">
+            <div id="cardForm" style="display:none;">
                 <h4>Create Card</h4>
                 <form>
                     <table>
                         <tr>
-                            <td><input id="newcardTitle" type="text" data-bind="value: newCards()[0].Title" /></td>
-                            <td><input id="newcardDescription" type="text" data-bind="value: newCards()[0].Description" /></td>
+                            <td><input id="newcardTitle" type="text" data-bind="value: newCards()[0].Title, valueUpdate: 'afterkeydown'" /></td>
+                            <td><input id="newcardDescription" type="text" data-bind="value: newCards()[0].Description, valueUpdate: 'afterkeydown'" /></td>
                             <td><ul id="newCardVisualizer" class="connectedSortable boardLane" data-bind="template: { name: 'cardTemplate', foreach: newCards}"></ul></td>
                         </tr>
                     </table>
 
                 </form>
-
-
             </div>
 
             <div id="laneForm" style="padding:10px; display:none;" >
@@ -50,25 +50,30 @@
                    </div>
 
                    <div>
-                        <button data-bind="click: addLane">Create New Lane</button>
+                        <label for="newLanePosition">Place</label>
+                        <select id="newLanePosition" data-bind="template : {name: 'newLanePositons'}"></select>
+                   </div>
+
+                   <div>
+                        <button data-bind="click: createLane">Create New Lane</button>
                     </div>
                 </form>
             </div>
 
         </div>
-
+        <div style="clear:both"></div>
         <div id="main">
             <script src="/assets/scripts/board.js"></script>
 
             <script>
 
                 $(function () {
-                    viewModel.board = "@Model.Id"
+                    boardModel.board = "@Model.Id"
                     @if(Model.Lanes != null)
                     {
                         foreach (var lane in Model.Lanes)
                         {
-                            <text>window.viewModel.lanes.push(new lane("@lane.Id", "@lane.Name",[</text>
+                            <text>boardModel.setupLanes([new lane("@lane.Id", "@lane.Name",[</text>
                             if (lane.Cards != null)
                             {
                                 foreach (var card in lane.Cards)
@@ -76,14 +81,14 @@
 			                        <text>new card("@card.Id","@card.Title", "@card.Description"),</text>
 		                        }
                             }
-                            <text>]));</text>
+                            <text>])]);</text>
                         }
                     }
                 });
 
             </script>
 
-            <div class="container" data-bind="foreach: {data: lanes, afterRender: createLanes}">
+            <div class="container" data-bind="foreach: {data: lanes, afterRender: initBoard}">
                 <div class="boardLaneContainer">
                     <div class="laneName" data-bind="text: Name"></div>
                     <ul class="connectedSortable boardLane" data-bind="template: {name: 'cardTemplate', foreach: Cards}, onCardMove: $root.moveCard, attr: {id:Id}"></ul>
@@ -97,6 +102,18 @@
                 </li>
             </script>
         
+            <script type="text/html" id="newLanePositons">
+                {{if lanes().length > 0}}
+                    <option value="0">Before ${lanes()[0].Name}</option>
+                {{else}}
+                    <option value="0">At Begining</option>
+                {{/if}}
+
+                {{each lanes}}
+                    <option value="${$index + 1}">After ${Name}</option>
+                {{/each}}
+            </script>
+
             <div style="clear:both;"></div>
 
         </div>

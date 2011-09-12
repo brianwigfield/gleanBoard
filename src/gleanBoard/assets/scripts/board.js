@@ -20,36 +20,47 @@
     });
     return toArray.splice(position, 0, moved[0]);
   };
-  window.viewModel = {
+  window.boardModel = {
     owner: "Brian",
     lanes: ko.observableArray([]),
-    newCards: ko.observableArray([new card("", ko.observable("Testing"), ko.observable("Description"))]),
+    newCards: ko.observableArray([new card("NewCardTemplate", ko.observable("Testing"), ko.observable("Description"))]),
     newLaneName: ko.observable("New Lane"),
+    setupLanes: function(lanesToSetup) {
+      var lane, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = lanesToSetup.length; _i < _len; _i++) {
+        lane = lanesToSetup[_i];
+        _results.push(this.lanes.push(lane));
+      }
+      return _results;
+    },
     createCard: function(onLane, position) {
       return $.post("/card/create", {
-        Board: viewModel.board,
-        Title: viewModel.newCards()[0].Title,
+        Board: boardModel.board,
+        Title: boardModel.newCards()[0].Title,
         Lane: onLane,
         Position: position,
-        Description: viewModel.newCards()[0].Description
+        Description: boardModel.newCards()[0].Description
       }, function(data) {
-        return viewModel.findLaneById(data.Lane).Cards.push(new card(data.Id, data.Title));
+        $("#NewCardTemplate").remove();
+        boardModel.findLaneById(data.Lane).Cards.splice(data.Position, 0, new card(data.Id, data.Title, data.Description));
+        return boardModel.newCards.splice(0, 1, new card("NewCardTemplate", ko.observable("Testing"), ko.observable("Description")));
       });
     },
-    addLane: function() {
+    createLane: function() {
       return $.post("/lane/create", {
-        name: viewModel.newLaneName,
-        board: viewModel.board,
-        position: 0
+        name: boardModel.newLaneName,
+        board: boardModel.board,
+        position: $("#newLanePosition").val()
       }, function(data) {
-        return viewModel.lanes.splice(0, 0, new lane(data.Id, data.Name, []));
+        return boardModel.lanes.splice(data.Position, 0, new lane(data.Id, data.Name, []));
       });
     },
     moveCard: function(id, from, to, position) {
       var fromLane, l, lane, post, toLane;
       l = (function() {
         var _i, _len, _ref, _results;
-        _ref = viewModel.lanes();
+        _ref = boardModel.lanes();
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           lane = _ref[_i];
@@ -60,13 +71,12 @@
         }
         return _results;
       })();
-      /*undefined Should not be needed!*/
       if (!(fromLane != null) || typeof fromLane === "undefined") {
-        return viewModel.createCard(to, position);
+        return boardModel.createCard(to, position);
       }
       moveById(id, fromLane.Cards, toLane.Cards, position);
       post = $.post("/card/move", {
-        board: viewModel.board,
+        board: boardModel.board,
         card: id,
         from: from,
         to: to,
@@ -76,7 +86,7 @@
         return alert("error occured");
       });
     },
-    createLanes: function() {
+    initBoard: function() {
       return $(".connectedSortable").sortable({
         connectWith: ".connectedSortable",
         placeholder: "laneCardDrop",
@@ -123,7 +133,7 @@
         var currentLane, receivedId;
         receivedId = $(ui.item).attr("id");
         /*filter out sortupdate event fired from source lane when card moves lanes*/
-        currentLane = window.viewModel.findLaneWithCard(receivedId).Id;
+        currentLane = boardModel.findLaneWithCard(receivedId).Id;
         if (!(ui.sender != null) && ui.item.context.parentNode.id !== currentLane) {
           return;
         }
@@ -133,15 +143,15 @@
   };
   $(function() {
     $("#addCardLink").click(function() {
-      $("#cardForm").toggle();
+      return $("#cardForm").toggle();
     });
     $("#addLaneLink").click(function() {
-      $("#laneForm").toggle();
+      return $("#laneForm").toggle();
     });
     $("div.boardLaneContainer").css("min-height", $(window).height() - $("div.boardLaneContainer").offset().top);
     $(window).resize(function() {
       return $("div.boardLaneContainer").css("min-height", $(window).height() - $("div.boardLaneContainer").offset().top);
     });
-    return ko.applyBindings(viewModel);
+    return ko.applyBindings(boardModel);
   });
 }).call(this);

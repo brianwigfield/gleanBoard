@@ -1,4 +1,13 @@
-﻿body
+﻿@mixin clear-after
+{
+    content:".";
+    display:block;
+    line-height:0px;
+    visibility:hidden;
+    clear:both;
+}
+
+body
 {
     background-color: #FFFFFF;
     font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
@@ -15,6 +24,11 @@ div.page
 div#menu
 {
     float:left;
+}
+ 
+div#menu:after
+{
+    @include clear-after;
 }
         
 div#menu ul
@@ -45,18 +59,14 @@ div#menuHolder
     height:40px;
 }
 
-div#menuHolder:after
-{
-    content:".";
-    display:block;
-    line-height:0px;
-    visibility:hidden;
-    clear:both;
-}
-
 div#cardForm
 {
     float:left;
+}
+
+div#cardForm:after
+{
+    @include clear-after;
 }
 
 $laneWidth: 220px;

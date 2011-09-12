@@ -19,8 +19,7 @@ namespace gleanBoard.Handlers
         {
             var id = Guid.NewGuid();
             Runtime.Bus.Send(new CreateCardCommand {Id = id, Board = Guid.Parse(data.Board), Lane = Guid.Parse(data.Lane), Title = data.Title, Position = data.Position, Description = data.Description});
-
-            return new NewCard {Id = id.ToString(), Lane = data.Lane, Title = data.Title};
+            return new NewCard {Id = id.ToString(), Lane = data.Lane, Title = data.Title, Description = data.Description};
         }
     }
 }

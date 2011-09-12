@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using SimpleCqrs.Eventing;
@@ -13,7 +14,7 @@ namespace gleanBoard
     {
         protected override IEventStore GetEventStore(IServiceLocator serviceLocator)
         {
-            return new SimpleCqrs.EventStore.MongoDb.MongoEventStore("mongodb://localhost", serviceLocator.Resolve<ITypeCatalog>());
+            return new SimpleCqrs.EventStore.MongoDb.MongoEventStore(ConfigurationManager.AppSettings["MONGOHQ_URL"], serviceLocator.Resolve<ITypeCatalog>());
         }
 
         protected override System.Collections.Generic.IEnumerable<System.Reflection.Assembly> GetAssembliesToScan(IServiceLocator serviceLocator)

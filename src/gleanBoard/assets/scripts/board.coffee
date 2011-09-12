@@ -8,47 +8,52 @@ window.moveById = (id, fromArray, toArray, position) ->
     moved = fromArray.remove (p) ->
         id == p.Id.toString()
     toArray.splice position, 0, moved[0]
-    
-window.viewModel = 
+
+window.boardModel = 
     owner: "Brian",
     lanes: ko.observableArray([])
     newCards: ko.observableArray([
-        new card "", ko.observable("Testing"), ko.observable("Description")
+        new card "NewCardTemplate", ko.observable("Testing"), ko.observable("Description")
     ])
     newLaneName: ko.observable("New Lane")
+    setupLanes: (lanesToSetup) ->
+        for lane in lanesToSetup
+            this.lanes.push lane
+
     createCard: (onLane, position) ->
         $.post "/card/create",
-               Board: viewModel.board, Title: viewModel.newCards()[0].Title, Lane: onLane, Position: position, Description: viewModel.newCards()[0].Description,
-               (data) -> 
-                    viewModel.findLaneById(data.Lane).Cards.push(new card(data.Id, data.Title))
+            Board: boardModel.board, Title: boardModel.newCards()[0].Title, Lane: onLane, Position: position, Description: boardModel.newCards()[0].Description,
+            (data) -> 
+                $("#NewCardTemplate").remove()
+                boardModel.findLaneById(data.Lane).Cards.splice data.Position, 0, new card(data.Id, data.Title, data.Description)
+                boardModel.newCards.splice 0, 1, new card "NewCardTemplate", ko.observable("Testing"), ko.observable("Description")
     
-    addLane: ->
+    createLane: ->
         $.post "/lane/create",
-               { name: viewModel.newLaneName, board: viewModel.board, position: 0 },
-               (data) -> viewModel.lanes.splice(0, 0, new lane(data.Id, data.Name, []))
+            name: boardModel.newLaneName, board: boardModel.board, position: $("#newLanePosition").val(),
+            (data) -> boardModel.lanes.splice(data.Position, 0, new lane(data.Id, data.Name, []))
     
     moveCard: (id, from, to, position) ->
-        l = for lane in viewModel.lanes()
+        l = for lane in boardModel.lanes()
             fromLane = lane if lane.Id == from
             toLane = lane if lane.Id == to
 
-        ###undefined Should not be needed!###
-        return viewModel.createCard to, position if not fromLane? || typeof fromLane == "undefined" 
+        return boardModel.createCard(to, position) if not fromLane? || typeof fromLane == "undefined" 
 
         moveById id, fromLane.Cards, toLane.Cards, position
 
         post = $.post "/card/move",
-               board: viewModel.board, card: id, from: from, to: to, position: position,
+               board: boardModel.board, card: id, from: from, to: to, position: position,
                (data) -> return
 
         post.error -> alert "error occured"
 
-    createLanes: ->
-        $(".connectedSortable").sortable(
+    initBoard: ->
+        $(".connectedSortable").sortable
             connectWith: ".connectedSortable",
             placeholder: "laneCardDrop",
             dropOnEmpty: true
-        ).disableSelection()
+        .disableSelection()
 
     findLaneById: (id) ->
         (lane for lane in this.lanes() when lane.Id == id)[0]
@@ -57,6 +62,7 @@ window.viewModel =
         for lane in this.lanes()
             for card in lane.Cards()
                 return lane if card.Id == cardId
+    
 
 ko.bindingHandlers.onCardMove =
     init: (element, valueAccessor, allBindingsAccessor, viewModel) ->
@@ -65,7 +71,7 @@ ko.bindingHandlers.onCardMove =
             receivedId = $(ui.item).attr "id"
             
             ###filter out sortupdate event fired from source lane when card moves lanes###
-            currentLane = window.viewModel.findLaneWithCard(receivedId).Id
+            currentLane = boardModel.findLaneWithCard(receivedId).Id
             return if not ui.sender? and ui.item.context.parentNode.id != currentLane
 
             callback.call(viewModel, receivedId, currentLane, event.target.id, ui.item.index())
@@ -73,14 +79,12 @@ ko.bindingHandlers.onCardMove =
 $ ->
     $("#addCardLink").click ->
         $("#cardForm").toggle()
-        return
 
     $("#addLaneLink").click ->
         $("#laneForm").toggle()
-        return
 
     $("div.boardLaneContainer").css "min-height", $(window).height() - $("div.boardLaneContainer").offset().top
     $(window).resize ->
         $("div.boardLaneContainer").css "min-height", $(window).height() - $("div.boardLaneContainer").offset().top
 
-    ko.applyBindings(viewModel)
+    ko.applyBindings(boardModel)

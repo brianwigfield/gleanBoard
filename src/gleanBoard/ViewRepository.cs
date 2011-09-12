@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Configuration;
 using MongoDB.Driver;
 
 namespace gleanBoard
@@ -9,7 +9,7 @@ namespace gleanBoard
 
         public ViewRepository()
         {
-            data = MongoServer.Create("mongodb://localhost").GetDatabase("Views");
+            data = MongoServer.Create(ConfigurationManager.AppSettings["MONGOHQ_URL"]).GetDatabase("Views");
         }
 
         public void Save<T>(T view)
