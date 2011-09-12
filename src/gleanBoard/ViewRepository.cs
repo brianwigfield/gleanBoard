@@ -9,7 +9,8 @@ namespace gleanBoard
 
         public ViewRepository()
         {
-            data = MongoServer.Create(ConfigurationManager.AppSettings["MONGOHQ_URL"]).GetDatabase("Views");
+            var connection = new MongoUrlBuilder(ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+            data = MongoServer.Create(connection.ToMongoUrl()).GetDatabase(connection.DatabaseName);
         }
 
         public void Save<T>(T view)
