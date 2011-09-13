@@ -1,34 +1,48 @@
 body {
   background-color: #FFFFFF;
-  font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+  font-family: Arial, Verdana, Tahoma, "Helvetica Neue", Helvetica, Sans-Serif;
   margin: 0px;
   padding: 0px;
   color: #000000; }
+
+h4 {
+  margin: 0px; }
+
+input {
+  padding: 5px; }
+
+.watermarked {
+  font-style: italic; }
+
+label.inputToolTip {
+  position: absolute;
+  text-indent: 5px; }
 
 div.page {
   width: 100%; }
 
 div#menu {
   float: left; }
-
-div#menu:after {
-  content: ".";
-  display: block;
-  line-height: 0px;
-  visibility: hidden;
-  clear: both; }
-
-div#menu ul {
-  list-style-type: none;
-  margin: 3px;
-  padding: 0px; }
-
-div#menu ul li {
-  padding: 3px;
-  margin: 2px;
-  border: 1px solid #CCCCCC;
-  border-radius: 2px;
-  display: inline; }
+  div#menu:after {
+    content: ".";
+    display: block;
+    line-height: 0px;
+    visibility: hidden;
+    clear: both; }
+  div#menu ul {
+    list-style-type: none;
+    margin: 3px;
+    padding: 0px; }
+    div#menu ul li {
+      padding: 5px;
+      margin: 2px;
+      border: 1px solid #CCCCCC;
+      border-radius: 2px;
+      display: inline; }
+      div#menu ul li a {
+        text-decoration: none;
+        color: #555555;
+        font-weight: bold; }
 
 div#title {
   display: block;
@@ -38,9 +52,6 @@ div#menuHolder {
   border-bottom: 2px solid #CCCCCC;
   padding: 10px;
   height: 40px; }
-
-div#cardForm {
-  float: left; }
 
 div#cardForm:after {
   content: ".";
@@ -61,7 +72,6 @@ ul.boardLane {
   list-style-type: none;
   margin: 0;
   padding: 5px;
-  padding: 5px;
   width: 220px; }
 
 ul.boardLane li {
@@ -70,26 +80,34 @@ ul.boardLane li {
 
 .laneCard {
   height: 100px;
-  border: solid 2px #999999;
+  border: solid 2px #DDDDDD;
   background-color: #FFFFFF;
   color: #000000;
-  text-align: left;
-  border-radius: 5px; }
+  text-align: left; }
 
 .laneCardDrop {
   height: 100px;
-  border: solid 2px #666666;
-  background-color: orange;
-  border-radius: 5px; }
+  border: solid 2px #666;
+  background-color: #F9772B; }
 
 div.cardHeader {
   padding: 3px;
   width: 204px;
   background: #DDD;
-  font-size: 12px;
-  border-bottom: solid 1px #AAA; }
+  font-size: 14px;
+  border-bottom: solid 1px #DDDDDD; }
 
 div.cardDetails {
   padding: 3px;
   width: 204px;
-  font-size: 10px; }
+  font-size: 12px; }
+
+div#inlineFormHolder {
+  clear: both;
+  background-color: #EEEEEE; }
+
+.cardEditTransfer {
+  border: solid 1px #333; }
+
+#editCardForm {
+  height: 120px; }

@@ -13,18 +13,14 @@
       Cards: ko.observableArray(cards)
     };
   };
-  window.moveById = function(id, fromArray, toArray, position) {
-    var moved;
-    moved = fromArray.remove(function(p) {
-      return id === p.Id.toString();
-    });
-    return toArray.splice(position, 0, moved[0]);
+  window.cardTemplate = function() {
+    return new card("NewCardTemplate", ko.observable(""), ko.observable(""));
   };
   window.boardModel = {
     owner: "Brian",
     lanes: ko.observableArray([]),
-    newCards: ko.observableArray([new card("NewCardTemplate", ko.observable("Testing"), ko.observable("Description"))]),
-    newLaneName: ko.observable("New Lane"),
+    newCards: ko.observableArray([cardTemplate()]),
+    newLaneName: ko.observable(""),
     setupLanes: function(lanesToSetup) {
       var lane, _i, _len, _results;
       _results = [];
@@ -44,7 +40,7 @@
       }, function(data) {
         $("#NewCardTemplate").remove();
         boardModel.findLaneById(data.Lane).Cards.splice(data.Position, 0, new card(data.Id, data.Title, data.Description));
-        return boardModel.newCards.splice(0, 1, new card("NewCardTemplate", ko.observable("Testing"), ko.observable("Description")));
+        return boardModel.newCards.splice(0, 1, window.cardTemplate());
       });
     },
     createLane: function() {
@@ -57,7 +53,7 @@
       });
     },
     moveCard: function(id, from, to, position) {
-      var fromLane, l, lane, post, toLane;
+      var fromLane, l, lane, moved, post, toLane;
       l = (function() {
         var _i, _len, _ref, _results;
         _ref = boardModel.lanes();
@@ -74,7 +70,10 @@
       if (!(fromLane != null) || typeof fromLane === "undefined") {
         return boardModel.createCard(to, position);
       }
-      moveById(id, fromLane.Cards, toLane.Cards, position);
+      moved = fromLane.Cards.remove(function(p) {
+        return id === p.Id.toString();
+      });
+      toLane.Cards.splice(position, 0, moved[0]);
       post = $.post("/card/move", {
         board: boardModel.board,
         card: id,
@@ -87,11 +86,20 @@
       });
     },
     initBoard: function() {
-      return $(".connectedSortable").sortable({
-        connectWith: ".connectedSortable",
+      var setSize;
+      $("ul.connectedSortable").sortable({
+        connectWith: "ul.connectedSortable",
         placeholder: "laneCardDrop",
-        dropOnEmpty: true
+        dropOnEmpty: true,
+        revert: 500
       }).disableSelection();
+      setSize = function() {
+        return $("div.boardLaneContainer").css("min-height", $(window).height() - $("div.boardLaneContainer").offset().top);
+      };
+      $(window).resize(function() {
+        return setSize();
+      });
+      return setSize();
     },
     findLaneById: function(id) {
       var lane;
@@ -143,15 +151,29 @@
   };
   $(function() {
     $("#addCardLink").click(function() {
-      return $("#cardForm").toggle();
+      return $("#cardForm").slideToggle();
     });
     $("#addLaneLink").click(function() {
-      return $("#laneForm").toggle();
+      return $("#laneForm").slideToggle();
     });
-    $("div.boardLaneContainer").css("min-height", $(window).height() - $("div.boardLaneContainer").offset().top);
-    $(window).resize(function() {
-      return $("div.boardLaneContainer").css("min-height", $(window).height() - $("div.boardLaneContainer").offset().top);
+    $("li.laneCard").live('click', function() {
+      $("#board").fadeTo(500, .3);
+      return $("#editCardForm").slideDown();
     });
-    return ko.applyBindings(boardModel);
+    ko.applyBindings(boardModel);
+    return $("input[data-watermark]").each(function() {
+      $(this).val($(this).data("watermark"));
+      return $(this).addClass("watermarked");
+    }).click(function() {
+      if ($(this).val() === $(this).data("watermark")) {
+        $(this).val("");
+        return $(this).removeClass("watermarked");
+      }
+    }).blur(function() {
+      if ($(this).val() === "") {
+        $(this).val($(this).data("watermark"));
+        return $(this).addClass("watermarked");
+      }
+    });
   });
 }).call(this);

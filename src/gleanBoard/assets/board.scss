@@ -10,10 +10,31 @@
 body
 {
     background-color: #FFFFFF;
-    font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    font-family: Arial, Verdana, Tahoma, "Helvetica Neue", Helvetica, Sans-Serif;
     margin: 0px;
     padding: 0px;
     color: #000000;
+}
+
+h4
+{
+    margin:0px;
+}
+
+input
+{
+    padding:5px;
+}
+
+.watermarked
+{
+    font-style: italic;
+}
+
+label.inputToolTip
+{
+    position:absolute;
+    text-indent:5px;
 }
 
 div.page 
@@ -24,26 +45,28 @@ div.page
 div#menu
 {
     float:left;
-}
- 
-div#menu:after
-{
-    @include clear-after;
-}
-        
-div#menu ul
-{
-    list-style-type:none;
-    margin:3px;
-    padding:0px;
-}
-div#menu ul li
-{
-    padding:3px;
-    margin:2px;
-    border:1px solid #CCCCCC;
-    border-radius:2px;
-    display: inline;
+    &:after {@include clear-after;}
+
+    ul
+    {
+        list-style-type:none;
+        margin:3px;
+        padding:0px;
+        li
+        {
+            padding:5px;
+            margin:2px;
+            border:1px solid #CCCCCC;
+            border-radius:2px;
+            display: inline;
+            a
+            {
+                text-decoration:none;
+                color: #555555;
+                font-weight:bold;
+            }
+        }
+    }
 }
 
 div#title
@@ -61,7 +84,7 @@ div#menuHolder
 
 div#cardForm
 {
-    float:left;
+    
 }
 
 div#cardForm:after
@@ -90,7 +113,6 @@ ul.boardLane
     list-style-type: none; 
     margin: 0; 
     padding: 5px; 
-    padding: 5px;
     width: $laneWidth;
 }
 ul.boardLane li 
@@ -102,19 +124,17 @@ ul.boardLane li
 .laneCard
 {
     height: $cardHeight;
-    border:solid 2px #999999;
+    border:solid 2px #DDDDDD;
     background-color:#FFFFFF;
     color:#000000;
     text-align:left;
-    border-radius:5px;
 }
 
 .laneCardDrop
 {
     height: $cardHeight;
-    border:solid 2px #666666;
-    background-color:orange;
-    border-radius:5px;
+    border:solid 2px #666;
+    background-color:#F9772B;
 }
 
 div.cardHeader 
@@ -122,13 +142,29 @@ div.cardHeader
     padding:3px;
     width:$cardWidth - 6;
     background:#DDD;
-    font-size:12px;
-    border-bottom:solid 1px #AAA;
+    font-size:14px;
+    border-bottom:solid 1px #DDDDDD;
 }
 
 div.cardDetails
 {
     padding:3px;
     width:$cardWidth - 6;
-    font-size:10px;
+    font-size:12px;
+}
+
+div#inlineFormHolder
+{
+    clear:both;
+    background-color:#EEEEEE;
+}
+
+.cardEditTransfer
+{
+    border:solid 1px #333;
+}
+
+#editCardForm
+{
+    height:120px;   
 }

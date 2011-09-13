@@ -32,13 +32,23 @@
                 <form>
                     <table>
                         <tr>
-                            <td><input id="newcardTitle" type="text" data-bind="value: newCards()[0].Title, valueUpdate: 'afterkeydown'" /></td>
-                            <td><input id="newcardDescription" type="text" data-bind="value: newCards()[0].Description, valueUpdate: 'afterkeydown'" /></td>
-                            <td><ul id="newCardVisualizer" class="connectedSortable boardLane" data-bind="template: { name: 'cardTemplate', foreach: newCards}"></ul></td>
+                            <td>
+                                <input id="newcardTitle" data-watermark="&lt; Title &gt;" type="text" data-bind="value: newCards()[0].Title, valueUpdate: 'afterkeydown'" />
+                            </td>
+                            <td rowspan="2">
+                                <ul id="newCardVisualizer" class="connectedSortable boardLane" data-bind="template: { name: 'cardTemplate', foreach: newCards}"></ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input id="newcardDescription" data-watermark="&lt; Description &gt;" type="text" data-bind="value: newCards()[0].Description, valueUpdate: 'afterkeydown'" /></td>
                         </tr>
                     </table>
 
                 </form>
+            </div>
+
+            <div id="editCardForm" style="display:none;">
+                Edit card here
             </div>
 
             <div id="laneForm" style="padding:10px; display:none;" >
@@ -88,7 +98,7 @@
 
             </script>
 
-            <div class="container" data-bind="foreach: {data: lanes, afterRender: initBoard}">
+            <div id="board" data-bind="foreach: {data: lanes, afterRender: initBoard}">
                 <div class="boardLaneContainer">
                     <div class="laneName" data-bind="text: Name"></div>
                     <ul class="connectedSortable boardLane" data-bind="template: {name: 'cardTemplate', foreach: Cards}, onCardMove: $root.moveCard, attr: {id:Id}"></ul>
@@ -118,5 +128,6 @@
 
         </div>
     </div>
+
 </body>
 </html>

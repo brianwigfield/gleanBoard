@@ -4,29 +4,24 @@ window.card = (id, title, description) ->
 window.lane = (id, name, cards) -> 
     Id: id, Name: name, Cards: ko.observableArray(cards)
 
-window.moveById = (id, fromArray, toArray, position) ->
-    moved = fromArray.remove (p) ->
-        id == p.Id.toString()
-    toArray.splice position, 0, moved[0]
+window.cardTemplate = ->
+    new card "NewCardTemplate", ko.observable(""), ko.observable("")
 
 window.boardModel = 
-    owner: "Brian",
+    owner: "Brian"
     lanes: ko.observableArray([])
-    newCards: ko.observableArray([
-        new card "NewCardTemplate", ko.observable("Testing"), ko.observable("Description")
-    ])
-    newLaneName: ko.observable("New Lane")
+    newCards: ko.observableArray([cardTemplate()])
+    newLaneName: ko.observable("")
     setupLanes: (lanesToSetup) ->
         for lane in lanesToSetup
             this.lanes.push lane
-
     createCard: (onLane, position) ->
         $.post "/card/create",
             Board: boardModel.board, Title: boardModel.newCards()[0].Title, Lane: onLane, Position: position, Description: boardModel.newCards()[0].Description,
             (data) -> 
                 $("#NewCardTemplate").remove()
                 boardModel.findLaneById(data.Lane).Cards.splice data.Position, 0, new card(data.Id, data.Title, data.Description)
-                boardModel.newCards.splice 0, 1, new card "NewCardTemplate", ko.observable("Testing"), ko.observable("Description")
+                boardModel.newCards.splice 0, 1, window.cardTemplate()
     
     createLane: ->
         $.post "/lane/create",
@@ -40,7 +35,9 @@ window.boardModel =
 
         return boardModel.createCard(to, position) if not fromLane? || typeof fromLane == "undefined" 
 
-        moveById id, fromLane.Cards, toLane.Cards, position
+        moved = fromLane.Cards.remove (p) ->
+            id == p.Id.toString()
+        toLane.Cards.splice position, 0, moved[0]
 
         post = $.post "/card/move",
                board: boardModel.board, card: id, from: from, to: to, position: position,
@@ -49,11 +46,20 @@ window.boardModel =
         post.error -> alert "error occured"
 
     initBoard: ->
-        $(".connectedSortable").sortable
-            connectWith: ".connectedSortable",
+        $("ul.connectedSortable").sortable
+            connectWith: "ul.connectedSortable",
             placeholder: "laneCardDrop",
-            dropOnEmpty: true
+            dropOnEmpty: true,
+            revert: 500
         .disableSelection()
+
+        setSize = ->
+            $("div.boardLaneContainer").css "min-height", $(window).height() - $("div.boardLaneContainer").offset().top
+    
+        $(window).resize ->
+            setSize()
+
+        setSize()
 
     findLaneById: (id) ->
         (lane for lane in this.lanes() when lane.Id == id)[0]
@@ -78,13 +84,26 @@ ko.bindingHandlers.onCardMove =
 
 $ ->
     $("#addCardLink").click ->
-        $("#cardForm").toggle()
+        $("#cardForm").slideToggle()
 
     $("#addLaneLink").click ->
-        $("#laneForm").toggle()
+        $("#laneForm").slideToggle()
 
-    $("div.boardLaneContainer").css "min-height", $(window).height() - $("div.boardLaneContainer").offset().top
-    $(window).resize ->
-        $("div.boardLaneContainer").css "min-height", $(window).height() - $("div.boardLaneContainer").offset().top
+    $("li.laneCard").live 'click', ->
+        $("#board").fadeTo 500, .3
+        $("#editCardForm").slideDown()
 
     ko.applyBindings(boardModel)
+
+    $("input[data-watermark]")
+        .each ->
+            $(this).val $(this).data("watermark")
+            $(this).addClass "watermarked"
+        .click ->
+            if $(this).val() == $(this).data("watermark")
+                $(this).val ""
+                $(this).removeClass "watermarked"
+        .blur ->
+            if $(this).val() == ""
+                $(this).val $(this).data("watermark") 
+                $(this).addClass "watermarked"
