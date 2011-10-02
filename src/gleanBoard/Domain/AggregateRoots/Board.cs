@@ -7,7 +7,6 @@ namespace gleanBoard.Domain.AggregateRoots
 {
     public class Board : AggregateRoot
     {
-        readonly List<Guid> _lanes = new List<Guid>();
 
         public Board() {}
 
@@ -19,6 +18,7 @@ namespace gleanBoard.Domain.AggregateRoots
         public void OnBoardCreated(BoardCreatedEvent e)
         {
             Id = e.AggregateRootId;
+            Lanes = new List<Guid>();
         }
 
         public void CreateLane(Guid id, string name, int position)
@@ -28,7 +28,7 @@ namespace gleanBoard.Domain.AggregateRoots
 
         public void CreateCard(Guid id, Guid lane, string title, int position, string description)
         {
-            if (!_lanes.Contains(lane))
+            if (!Lanes.Contains(lane))
                 throw new ArgumentException("Lane does not exist");
 
             Apply(new CardCreatedEvent {AggregateRootId = Id, Card = id, Lane = lane, Title = title, Postion = position, Description = description});
@@ -41,8 +41,16 @@ namespace gleanBoard.Domain.AggregateRoots
 
         public void OnLaneCreated(LaneCreatedEvent e)
         {
-            _lanes.Add(e.Lane);
+            Lanes.Add(e.Lane);
+        }
+
+        public List<Guid> Lanes { get; set; }
+
+        public class Lane
+        {
+            public List<Guid> Cards { get; set; }
         }
 
     }
+
 }

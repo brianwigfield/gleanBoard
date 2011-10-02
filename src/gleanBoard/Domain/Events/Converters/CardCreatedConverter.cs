@@ -1,7 +1,7 @@
-﻿using gleanBoard.Domain.Events.Converters;
+﻿using gleanBoard.Domain.Events.Depricated;
 using SimpleCqrs.Eventing;
 
-namespace gleanBoard.Domain.Events
+namespace gleanBoard.Domain.Events.Converters
 {
     public class CardCreatedConverter : IEventConverter<CardCreatedEvent_v1, CardCreatedEvent>
     {

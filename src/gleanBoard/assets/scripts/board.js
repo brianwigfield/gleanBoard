@@ -13,13 +13,10 @@
       Cards: ko.observableArray(cards)
     };
   };
-  window.cardTemplate = function() {
-    return new card("NewCardTemplate", ko.observable(""), ko.observable(""));
-  };
   window.boardModel = {
     owner: "Brian",
     lanes: ko.observableArray([]),
-    newCards: ko.observableArray([cardTemplate()]),
+    newCards: ko.observableArray([new card("NewCardTemplate", ko.observable(""), ko.observable(""))]),
     newLaneName: ko.observable(""),
     setupLanes: function(lanesToSetup) {
       var lane, _i, _len, _results;
@@ -40,7 +37,8 @@
       }, function(data) {
         $("#NewCardTemplate").remove();
         boardModel.findLaneById(data.Lane).Cards.splice(data.Position, 0, new card(data.Id, data.Title, data.Description));
-        return boardModel.newCards.splice(0, 1, window.cardTemplate());
+        boardModel.newCards.splice(0, 1, new card("NewCardTemplate", ko.observable(""), ko.observable("")));
+        return boardModel.newCards.splice(0, 1, new card("NewCardTemplate", ko.observable(""), ko.observable("")));
       });
     },
     createLane: function() {
@@ -53,20 +51,17 @@
       });
     },
     moveCard: function(id, from, to, position) {
-      var fromLane, l, lane, moved, post, toLane;
-      l = (function() {
-        var _i, _len, _ref, _results;
-        _ref = boardModel.lanes();
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          lane = _ref[_i];
-          if (lane.Id === from) {
-            fromLane = lane;
-          }
-          _results.push(lane.Id === to ? toLane = lane : void 0);
+      var fromLane, lane, moved, post, toLane, _i, _len, _ref;
+      _ref = boardModel.lanes();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        lane = _ref[_i];
+        if (lane.Id === from) {
+          fromLane = lane;
         }
-        return _results;
-      })();
+        if (lane.Id === to) {
+          toLane = lane;
+        }
+      }
       if (!(fromLane != null) || typeof fromLane === "undefined") {
         return boardModel.createCard(to, position);
       }
@@ -156,7 +151,7 @@
     $("#addLaneLink").click(function() {
       return $("#laneForm").slideToggle();
     });
-    $("li.laneCard").live('click', function() {
+    $("div.boardLaneContainer ul.boardLane li.laneCard").live('click', function() {
       $("#board").fadeTo(500, .3);
       return $("#editCardForm").slideDown();
     });
@@ -164,7 +159,7 @@
     return $("input[data-watermark]").each(function() {
       $(this).val($(this).data("watermark"));
       return $(this).addClass("watermarked");
-    }).click(function() {
+    }).focus(function() {
       if ($(this).val() === $(this).data("watermark")) {
         $(this).val("");
         return $(this).removeClass("watermarked");

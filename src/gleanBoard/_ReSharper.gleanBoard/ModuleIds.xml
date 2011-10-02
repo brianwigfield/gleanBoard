@@ -1,12 +1,6 @@
 <Modules>
   <Module PersistentId="36983762-E2B8-46F3-A6DE-523E85BB9BB6" ModuleId="gleanBoard" />
   <Module PersistentId="d:Miscellaneous Files" ModuleId="SimpleCqrs" />
-  <Module PersistentId="SimpleCqrs, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs_1" />
-  <Module PersistentId="SimpleCqrs.Utilites, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.Utilites" />
-  <Module PersistentId="SimpleCqrs.EventStore.MongoDb, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.EventStore.MongoDb" />
-  <Module PersistentId="SimpleCqrs.EventStore.MongoDb, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.EventStore.MongoDb_1" />
-  <Module PersistentId="SimpleCqrs.EventStore.MongoDb, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.EventStore.MongoDb_2" />
-  <Module PersistentId="SimpleCqrs.EventStore.MongoDb, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.EventStore.MongoDb_3" />
-  <Module PersistentId="SimpleCqrs.EventStore.MongoDb, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.EventStore.MongoDb_4" />
-  <Module PersistentId="SimpleCqrs.Utilites, Version=1.0.0.0, Culture=neutral" ModuleId="SimpleCqrs.Utilites_1" />
+  <Module PersistentId="30CDB9ED-43EB-4FD0-92A3-8D7839C1C2F6" ModuleId="gleanBoard.Specs" />
+  <Module PersistentId="F79EA92E-66F5-4ED5-A57B-ECA8B2AD3A4C" ModuleId="gleanBoard.Specs_1" />
 </Modules>

@@ -104,13 +104,13 @@
     <Content Include="assets\scripts\lib\jquery-1.6.2-vsdoc.js" />
     <Content Include="assets\scripts\lib\jquery-1.6.2.min.js" />
     <Content Include="assets\scripts\lib\knockout-1.3.0.js" />
-    <Content Include="assets\site.css">
+    <Content Include="assets\styles\site.css">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>site.scss</DependentUpon>
     </Content>
-    <Content Include="assets\themes\smoothness\jquery-ui.css" />
-    <Content Include="assets\board.css">
+    <Content Include="assets\styles\themes\smoothness\jquery-ui.css" />
+    <Content Include="assets\styles\board.css">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>board.scss</DependentUpon>
@@ -130,8 +130,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\AggregateRoots\Account.cs" />
-    <Compile Include="Domain\Events\CardCreatedConverter.cs" />
-    <Compile Include="Domain\Events\Converters\CardCreatedEvent_v1.cs" />
+    <Compile Include="Domain\Events\Converters\CardCreatedConverter.cs" />
+    <Compile Include="Domain\Events\Depricated\CardCreatedEvent_v1.cs" />
     <Compile Include="Domain\Events\LaneCreatedEvent.cs" />
     <Compile Include="Domain\Events\AccountCreatedEvent.cs" />
     <Compile Include="Domain\CommandHandlers\SignUpCommandHandler.cs" />
@@ -182,11 +182,11 @@
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>board.js</LastGenOutput>
     </None>
-    <None Include="assets\board.scss">
+    <None Include="assets\styles\board.scss">
       <Generator>ScssGenerator</Generator>
       <LastGenOutput>board.css</LastGenOutput>
     </None>
-    <None Include="assets\site.scss">
+    <None Include="assets\styles\site.scss">
       <Generator>ScssGenerator</Generator>
       <LastGenOutput>site.css</LastGenOutput>
     </None>

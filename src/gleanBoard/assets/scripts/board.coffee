@@ -4,32 +4,32 @@ window.card = (id, title, description) ->
 window.lane = (id, name, cards) -> 
     Id: id, Name: name, Cards: ko.observableArray(cards)
 
-window.cardTemplate = ->
-    new card "NewCardTemplate", ko.observable(""), ko.observable("")
-
 window.boardModel = 
     owner: "Brian"
     lanes: ko.observableArray([])
-    newCards: ko.observableArray([cardTemplate()])
+    newCards: ko.observableArray([ new card("NewCardTemplate", ko.observable(""), ko.observable("")) ])
     newLaneName: ko.observable("")
     setupLanes: (lanesToSetup) ->
         for lane in lanesToSetup
             this.lanes.push lane
+
     createCard: (onLane, position) ->
         $.post "/card/create",
             Board: boardModel.board, Title: boardModel.newCards()[0].Title, Lane: onLane, Position: position, Description: boardModel.newCards()[0].Description,
             (data) -> 
                 $("#NewCardTemplate").remove()
                 boardModel.findLaneById(data.Lane).Cards.splice data.Position, 0, new card(data.Id, data.Title, data.Description)
-                boardModel.newCards.splice 0, 1, window.cardTemplate()
+                boardModel.newCards.splice 0, 1, new card("NewCardTemplate", ko.observable(""), ko.observable(""))
+                boardModel.newCards.splice 0, 1, new card "NewCardTemplate", ko.observable("") , ko.observable ""
     
     createLane: ->
         $.post "/lane/create",
             name: boardModel.newLaneName, board: boardModel.board, position: $("#newLanePosition").val(),
-            (data) -> boardModel.lanes.splice(data.Position, 0, new lane(data.Id, data.Name, []))
+            (data) -> 
+                boardModel.lanes.splice(data.Position, 0, new lane(data.Id, data.Name, []))
     
     moveCard: (id, from, to, position) ->
-        l = for lane in boardModel.lanes()
+        for lane in boardModel.lanes()
             fromLane = lane if lane.Id == from
             toLane = lane if lane.Id == to
 
@@ -54,7 +54,7 @@ window.boardModel =
         .disableSelection()
 
         setSize = ->
-            $("div.boardLaneContainer").css "min-height", $(window).height() - $("div.boardLaneContainer").offset().top
+            $("div.boardLaneContainer").css("min-height", $(window).height() - $("div.boardLaneContainer").offset().top)
     
         $(window).resize ->
             setSize()
@@ -89,7 +89,7 @@ $ ->
     $("#addLaneLink").click ->
         $("#laneForm").slideToggle()
 
-    $("li.laneCard").live 'click', ->
+    $("div.boardLaneContainer ul.boardLane li.laneCard").live 'click', ->
         $("#board").fadeTo 500, .3
         $("#editCardForm").slideDown()
 
@@ -99,7 +99,7 @@ $ ->
         .each ->
             $(this).val $(this).data("watermark")
             $(this).addClass "watermarked"
-        .click ->
+        .focus ->
             if $(this).val() == $(this).data("watermark")
                 $(this).val ""
                 $(this).removeClass "watermarked"
