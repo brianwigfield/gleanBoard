@@ -60,6 +60,9 @@ div#cardForm:after {
   visibility: hidden;
   clear: both; }
 
+#board {
+  white-space: nowrap; }
+
 .boardLaneContainer {
   float: left;
   border-right: 2px dashed #DDDDDD;
@@ -73,10 +76,9 @@ ul.boardLane {
   margin: 0;
   padding: 5px;
   width: 220px; }
-
-ul.boardLane li {
-  margin: 5px;
-  width: 210px; }
+  ul.boardLane li {
+    margin: 5px;
+    width: 210px; }
 
 .laneCard {
   height: 100px;

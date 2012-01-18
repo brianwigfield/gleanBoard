@@ -14,6 +14,12 @@ namespace gleanBoard.Specs.Helpers
             ShouldHaveApplied<T>(ar, _ => true);
         }
 
+        public static void HadApplied<T>(this AggregateRoot ar, T e) where T: DomainEvent
+        {
+            e.AggregateRootId = ar.Id;
+            ar.Apply(e);
+        }
+
         public static void ShouldHaveApplied<T>(this AggregateRoot ar, Func<T, bool> func) where T : DomainEvent
         {
             ar.UncommittedEvents.Where(_ => _.GetType() == typeof(T))

@@ -96,6 +96,10 @@ $laneWidth: 220px;
 $cardHeight: 100px;
 $cardWidth: $laneWidth - 10;
 
+#board {
+	white-space: nowrap;
+}
+
 .boardLaneContainer 
 {
     float:left;
@@ -114,11 +118,11 @@ ul.boardLane
     margin: 0; 
     padding: 5px; 
     width: $laneWidth;
-}
-ul.boardLane li 
-{
-    margin: 5px;
-    width: $cardWidth;
+	li 
+	{
+		margin: 5px;
+		width: $cardWidth;
+	}
 }
 
 .laneCard

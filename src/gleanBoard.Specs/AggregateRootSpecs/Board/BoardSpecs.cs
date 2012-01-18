@@ -26,8 +26,8 @@ namespace gleanBoard.Specs.AggregateRootSpecs.Board
         Establish that = () =>
             {
                 board = new Domain.AggregateRoots.Board(Guid.NewGuid(), "");
-                board.CreateLane(Guid.NewGuid(), "Test Lane", 0);
-                board.CreateLane(lane, "Test Lane 2", 0);
+                board.HadApplied(new LaneCreatedEvent {Lane = Guid.NewGuid(), Name = "Test Lane", Postion = 0});
+                board.HadApplied(new LaneCreatedEvent {Lane = lane, Name = "Test Lane 2", Postion = 0});
             };
 
         Because of = () => 
@@ -45,7 +45,7 @@ namespace gleanBoard.Specs.AggregateRootSpecs.Board
         Establish that = () =>
         {
             board = new Domain.AggregateRoots.Board(Guid.NewGuid(), "");
-            board.CreateLane(Guid.NewGuid(), "Test Lane", 0);
+            board.HadApplied(new LaneCreatedEvent { Lane = Guid.NewGuid(), Name = "Test Lane", Postion = 0 });
         };
 
         Because of = () =>

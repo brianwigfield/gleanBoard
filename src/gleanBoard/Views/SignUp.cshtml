@@ -51,7 +51,7 @@
 
         <script>
             $(function () {
-                $("#CreateAccount").submit(function () {
+                $("#CreateAccount button").submit(function () {
                     $.post("/signup",
                         { username: $("#Username").val(), password: $("#Password").val(), passwordConfirm: $("#PasswordConfirm").val() },
                         function (data) { alert(data); },

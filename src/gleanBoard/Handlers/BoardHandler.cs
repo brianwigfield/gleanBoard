@@ -8,6 +8,7 @@ namespace gleanBoard.Handlers
         {
             var repo = Runtime.Locator.Resolve<ViewRepository>();
             return repo.Get<Board>() ?? new Board();
+
         }
     }
 }

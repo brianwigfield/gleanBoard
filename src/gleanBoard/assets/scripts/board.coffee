@@ -17,7 +17,7 @@ window.boardModel =
         $.post "/card/create",
             Board: boardModel.board, Title: boardModel.newCards()[0].Title, Lane: onLane, Position: position, Description: boardModel.newCards()[0].Description,
             (data) -> 
-                $("#NewCardTemplate").remove()
+                $("#NewCardTemplate").remove()newLanePositons
                 boardModel.findLaneById(data.Lane).Cards.splice data.Position, 0, new card(data.Id, data.Title, data.Description)
                 boardModel.newCards.splice 0, 1, new card("NewCardTemplate", ko.observable(""), ko.observable(""))
                 boardModel.newCards.splice 0, 1, new card "NewCardTemplate", ko.observable("") , ko.observable ""
@@ -68,19 +68,6 @@ window.boardModel =
         for lane in this.lanes()
             for card in lane.Cards()
                 return lane if card.Id == cardId
-    
-
-ko.bindingHandlers.onCardMove =
-    init: (element, valueAccessor, allBindingsAccessor, viewModel) ->
-        callback = valueAccessor()
-        $(element).bind "sortupdate", (event, ui) ->
-            receivedId = $(ui.item).attr "id"
-            
-            ###filter out sortupdate event fired from source lane when card moves lanes###
-            currentLane = boardModel.findLaneWithCard(receivedId).Id
-            return if not ui.sender? and ui.item.context.parentNode.id != currentLane
-
-            callback.call(viewModel, receivedId, currentLane, event.target.id, ui.item.index())
 
 $ ->
     $("#addCardLink").click ->
@@ -107,3 +94,15 @@ $ ->
             if $(this).val() == ""
                 $(this).val $(this).data("watermark") 
                 $(this).addClass "watermarked"
+
+ko.bindingHandlers.onCardMove =
+    init: (element, valueAccessor, allBindingsAccessor, viewModel) ->
+        callback = valueAccessor()
+        $(element).bind "sortupdate", (event, ui) ->
+            receivedId = $(ui.item).attr "id"
+            
+            ###filter out sortupdate event fired from source lane when card moves lanes###
+            currentLane = boardModel.findLaneWithCard(receivedId).Id
+            return if not ui.sender? and ui.item.context.parentNode.id != currentLane
+
+            callback.call(viewModel, receivedId, currentLane, event.target.id, ui.item.index())

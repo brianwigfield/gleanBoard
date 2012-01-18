@@ -46,7 +46,7 @@ namespace gleanBoard.Domain.AggregateRoots
 
         public List<Guid> Lanes { get; set; }
 
-        public class Lane
+        private class Lane
         {
             public List<Guid> Cards { get; set; }
         }

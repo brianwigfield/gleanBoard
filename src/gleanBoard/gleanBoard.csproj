@@ -101,9 +101,16 @@
     <Content Include="assets\images\menu_background_left.jpg" />
     <Content Include="assets\images\menu_background_right.jpg" />
     <Content Include="assets\images\searchbox_background.gif" />
+    <Content Include="assets\scripts\board_backbone.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>board_backbone.coffee</DependentUpon>
+    </Content>
+    <Content Include="assets\scripts\lib\backbone.min.js" />
     <Content Include="assets\scripts\lib\jquery-1.6.2-vsdoc.js" />
     <Content Include="assets\scripts\lib\jquery-1.6.2.min.js" />
     <Content Include="assets\scripts\lib\knockout-1.3.0.js" />
+    <Content Include="assets\scripts\lib\underscore.min.js" />
     <Content Include="assets\styles\site.css">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -181,6 +188,10 @@
     <None Include="assets\scripts\board.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>board.js</LastGenOutput>
+    </None>
+    <None Include="assets\scripts\board_backbone.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>board_backbone.js</LastGenOutput>
     </None>
     <None Include="assets\styles\board.scss">
       <Generator>ScssGenerator</Generator>

@@ -7,7 +7,8 @@
     <script src="/assets/scripts/lib/jquery-1.6.2.min.js"></script>
     <script src="/assets/scripts/lib/jquery-ui-1.8.11.min.js"></script>
     <script src="/assets/scripts/lib/jquery.tmpl.js"></script>
-    <script src="/assets/scripts/lib/knockout-1.3.0.js"></script>
+    <script src="/assets/scripts/lib/underscore.min.js"></script>
+    <script src="/assets/scripts/lib/backbone.min.js"></script>
 </head>
 
 <body>
@@ -43,7 +44,7 @@
                             <td><input id="newcardDescription" data-watermark="&lt; Description &gt;" type="text" data-bind="value: newCards()[0].Description, valueUpdate: 'afterkeydown'" /></td>
                         </tr>
                     </table>
-
+                    <button id="createNewCard" type="button">Create</button>
                 </form>
             </div>
 
@@ -56,7 +57,7 @@
                 <form>
                     <div>
                         <label for="newLaneName">Name</label>
-                        <input id="newLaneName" type="text" data-bind="value: newLaneName" />
+                        <input id="newLaneName" type="text" />
                    </div>
 
                    <div>
@@ -65,7 +66,7 @@
                    </div>
 
                    <div>
-                        <button data-bind="click: createLane">Create New Lane</button>
+                        <button id="createNewLane">Create New Lane</button>
                     </div>
                 </form>
             </div>
@@ -73,55 +74,64 @@
         </div>
         <div style="clear:both"></div>
         <div id="main">
-            <script src="/assets/scripts/board.js"></script>
-
+            <script src="/assets/scripts/board_backbone.js"></script>
             <script>
-
                 $(function () {
-                    boardModel.board = "@Model.Id"
-                    @if(Model.Lanes != null)
+                    var laneModels = new Array();
+                    @foreach(var lane in Model.Lanes)
                     {
-                        foreach (var lane in Model.Lanes)
-                        {
-                            <text>boardModel.setupLanes([new lane("@lane.Id", "@lane.Name",[</text>
-                            if (lane.Cards != null)
+                        <text>
+                            var lane = {Name: '@lane.Name', Cards: new Array()};
+                            @if (lane.Cards != null)
                             {
                                 foreach (var card in lane.Cards)
-		                        {
-			                        <text>new card("@card.Id","@card.Title", "@card.Description"),</text>
-		                        }
+                                {
+                                    <text>
+                                        lane.Cards.push({Id: '@card.Id', Title: '@card.Title', Description: '@card.Description'});
+                                    </text>
+                                }
                             }
-                            <text>])]);</text>
-                        }
+                            laneModels.push(lane);
+                        </text>
                     }
+                    window.gleanBoard.setupBoard('@Model.Id', laneModels);
                 });
-
             </script>
 
-            <div id="board" data-bind="foreach: {data: lanes, afterRender: initBoard}">
-                <div class="boardLaneContainer">
-                    <div class="laneName" data-bind="text: Name"></div>
-                    <ul class="connectedSortable boardLane" data-bind="template: {name: 'cardTemplate', foreach: Cards}, onCardMove: $root.moveCard, attr: {id:Id}"></ul>
-                </div>
+            <div id="board">
+                <ul class="connectedSortable boardLane" data-bind="onCardMove: $root.moveCard, attr: {id:Id}"></ul>
             </div>
 
-            <script type="text/html" id="cardTemplate">
-                <li id="${Id}" class="laneCard">
-                    <div class="cardHeader">${Title}</div>
-                    <div class="cardDetails">${Description}</div>
+            <script id="laneTemplate" type="text/html">
+                <% _.each(lanes, function(lane){ %>
+                    <div class="boardLaneContainer">
+                        <div class="laneName"><%= lane.get('Name') %></div>
+                        <ul class="connectedSortable boardLane">
+                            <% _.each(lane.get('Lane').models, function(card) { %>
+                                <%= cardTemplate({card:card}) %>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% }); %>
+            </script>
+
+            <script id="cardTemplate" type="text/html">
+                <li id="<%= card.get('Id') %>" class="laneCard">
+                    <div class="cardHeader"><%= card.get('Title') %></div>
+                    <div class="cardDetails"><%= card.get('Description') %></div>
                 </li>
             </script>
         
-            <script type="text/html" id="newLanePositons">
-                {{if lanes().length > 0}}
-                    <option value="0">Before ${lanes()[0].Name}</option>
-                {{else}}
+            <script id="newLanePositonsTemplate" type="text/html">
+                <% if(lanes.length > 0) { %>
+                    <option value="0">Before <%= lanes[0].get('Name') %></option>
+                <% } else { %>
                     <option value="0">At Begining</option>
-                {{/if}}
+                <% } %>
 
-                {{each lanes}}
-                    <option value="${$index + 1}">After ${Name}</option>
-                {{/each}}
+                <% for(var i = 0; i < lanes.length; i++) { %>
+                    <option value="<%= i + 1 %>">After <%= lanes[i].get('Name') %></option>
+                <% } %>
             </script>
 
             <div style="clear:both;"></div>
